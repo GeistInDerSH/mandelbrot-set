@@ -7,12 +7,12 @@
 
 (def latest-revision (build/git-process {:git-args "rev-parse --short HEAD"}))
 (defn -get-patch-version []
-  (let [last-version-bump-commit "e222f0ba" ;; Count the commits since the version bump as the patches
-        git-arg (format "rev-list %s...%s --count" last-version-bump-commit latest-revision)]
+  (let [last-version-bump-commit "bbd0da60"                 ;; Count the commits since the version bump as the patches
+        git-arg                  (format "rev-list %s...%s --count" last-version-bump-commit latest-revision)]
     (build/git-process {:git-args git-arg})))
 
 (def lib 'mandelbrot)
-(def version (format "0.1.%s" (-get-patch-version)))
+(def version (format "0.2.%s" (-get-patch-version)))
 (def class-dir "target/classes")
 (def uber-file (format "target/%s-%s-standalone.jar" (name lib) version))
 
@@ -24,8 +24,8 @@
 
 (defn uber [_]
   (clean nil)
-  (build/copy-dir {:src-dirs    ["resources"]
-                   :target-dir  class-dir})
+  (build/copy-dir {:src-dirs   ["resources"]
+                   :target-dir class-dir})
   (build/compile-clj {:basis        @basis
                       :compile-opts {:direct-linking true}
                       :ns-compile   '[com.geistindersh.mandelbrot.core]
