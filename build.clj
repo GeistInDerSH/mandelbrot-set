@@ -7,7 +7,7 @@
 
 (def latest-revision (build/git-process {:git-args "rev-parse --short HEAD"}))
 (defn -get-patch-version []
-  (let [last-version-bump-commit "" ;; Count the commits since the version bump as the patches
+  (let [last-version-bump-commit "e222f0ba" ;; Count the commits since the version bump as the patches
         git-arg (format "rev-list %s...%s --count" last-version-bump-commit latest-revision)]
     (build/git-process {:git-args git-arg})))
 
