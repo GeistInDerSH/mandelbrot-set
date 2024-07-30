@@ -1,0 +1,16 @@
+#kaocha/v1
+#merge
+[{:tests [{:id :unit
+           :skip-meta [:integration]}
+          {:id :integration
+           :focus-meta [:integration]}]
+  :watch? false
+  :reporter kaocha.report/documentation}
+#profile {:ci {:color? false
+               :reporter kaocha.report.progress/report
+               :fail-fast? false}
+          :benchmark {:kaocha/plugins [:kaocha.plugin/profiling]
+                      :kaocha.plugin.profiling/profiling? true
+                      :fail-fast? true}
+          :default {:color? true
+                    :fail-fast? true}}]

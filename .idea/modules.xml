@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mandelbrot-clj.iml" filepath="$PROJECT_DIR$/mandelbrot-clj.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mandelbrot-set.iml" filepath="$PROJECT_DIR$/mandelbrot-set.iml" />
     </modules>
   </component>
 </project>
