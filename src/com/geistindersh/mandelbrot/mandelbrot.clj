@@ -33,7 +33,7 @@
                         cy    (+ (* y y-delta)
                                  y-min)
                         index (+ (* y x-res) x)]
-                    (aset arr index (mandelbrot cx cy limit)))))]
+                    (aset-int arr index (mandelbrot cx cy limit)))))]
     (doseq [task tasks]
       @task)
     arr))
@@ -44,15 +44,15 @@
    independently."
   {:added "0.1.1"}
   [options]
-  (let [{:keys [x-min y-min y-res x-res x-delta y-delta limit]} options]
-    (->> (for [x (range 0 x-res)
-               y (range 0 y-res)]
-           [x y])
-         (map (fn [[x y]]
-                (let [cx (float (+ (* x x-delta) x-min))
-                      cy (float (+ (* y y-delta) y-min))]
-                  (mandelbrot cx cy limit))))
-         (int-array))))
+  (let [{:keys [x-min y-min y-res x-res x-delta y-delta limit]} options
+        arr (int-array (* y-res x-res) 0)]
+    (doseq [y (range 0 y-res)
+            :let [base (int (* y x-res))
+                  cy   (float (+ (* y y-delta) y-min))]]
+      (doseq [x (range 0 x-res)
+              :let [cx (float (+ (* x x-delta) x-min))]]
+        (aset-int arr (+ base x) (mandelbrot cx cy limit))))
+    arr))
 
 (defn create-buffer
   "Generate a 1-D array of size x-res * y-res, and calculate the mandelbrot
