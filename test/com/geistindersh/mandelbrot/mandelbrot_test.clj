@@ -1,6 +1,6 @@
 (ns com.geistindersh.mandelbrot.mandelbrot-test
   (:require [clojure.test :refer [are deftest testing]]
-            [com.geistindersh.mandelbrot.mandelbrot :refer :all]
+            [com.geistindersh.mandelbrot.mandelbrot :refer [create-buffer]]
             [com.geistindersh.mandelbrot.options :as opt]))
 
 (deftest create-buffer-test
