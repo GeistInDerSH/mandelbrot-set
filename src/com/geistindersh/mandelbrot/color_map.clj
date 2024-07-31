@@ -77,9 +77,8 @@
         bounded-value (coerce-in index 0.0 1.0)
         [start stop] (->> pairs
                           (partition 2 1)
-                          (filterv (fn [[start stop]]
-                                     (and (<= (first start) index)
-                                          (>= (first stop) index))))
+                          (filter (fn [[start stop]]
+                                    (<= (first start) index (first stop))))
                           (first))
         fraction      (float (/ (- bounded-value (first start))
                                 (- (first stop) (first start))))]
