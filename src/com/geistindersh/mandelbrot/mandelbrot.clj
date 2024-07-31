@@ -56,8 +56,7 @@
                 (if (>= val limit)
                   Color/BLACK
                   (get color-options (- val lower-bound)))))
-         (filter some?)
-         (vec))))
+         (filter some?))))
 
 (defn create-bitmap-byte-buffer
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
@@ -68,7 +67,7 @@
         color-buffer    (get-colors color-map options)
         bytes-per-pixel (.getBytesPerPixel ColorType/RGBA_8888)
         byte-buffer     (byte-array (* x-res y-res bytes-per-pixel) (byte 0))]
-    (doseq [[i color] (map-indexed color-buffer)
+    (doseq [[i color] (map-indexed vector color-buffer)
             :let [base (* i bytes-per-pixel)]]
       (aset-byte byte-buffer (+ 0 base) (unchecked-byte (* 255 (.getRed color))))
       (aset-byte byte-buffer (+ 1 base) (unchecked-byte (* 255 (.getGreen color))))
