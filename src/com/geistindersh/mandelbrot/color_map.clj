@@ -41,7 +41,7 @@
    {:pre [(>= (count colors) 2)]}
    (let [func       (partial colors-between step-count)
          steps      (->> colors
-                         (partition 2 2)
+                         (partition 2 1)
                          (map func)
                          (flatten)
                          (vec))
