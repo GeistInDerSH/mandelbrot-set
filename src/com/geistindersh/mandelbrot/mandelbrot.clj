@@ -67,7 +67,9 @@
                         (if (>= val limit)
                           Color/BLACK
                           (get color-options (- val lower-bound)))))
-                 (filter some?)
+                 (keep (fn [val]
+                         (when (some? val)
+                           val)))
                  (map (fn [color]
                         [(unchecked-byte (* 255 (.getRed color)))
                          (unchecked-byte (* 255 (.getGreen color)))
