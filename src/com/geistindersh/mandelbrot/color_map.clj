@@ -3,28 +3,46 @@
 
 (defrecord ColorMap [pairs])
 
+(defn- coerce-in
+  "Coerce the given value between [min-val max-val], or return the value
+   if it's already between the two"
+  {:added "0.2.3"}
+  [value min-val max-val]
+  (cond
+    (<= value min-val) min-val
+    (>= value max-val) max-val
+    :else value))
+
+(defn- colors-between
+  "Generate a sequence of colors between the given start and end colors"
+  [step-count [start end]]
+  (let [red-start   (.getRed start)
+        red-step    (/ (- (.getRed end) red-start)
+                       step-count)
+        green-start (.getGreen start)
+        green-step  (/ (- (.getGreen end) green-start)
+                       step-count)
+        blue-start  (.getBlue start)
+        blue-step   (/ (- (.getBlue end) blue-start)
+                       step-count)]
+    (->> (range step-count)
+         (map (fn [i]
+                (let [r (+ (* red-step i) red-start)
+                      g (+ (* green-step i) green-start)
+                      b (+ (* blue-step i) blue-start)]
+                  (Color. (int (coerce-in r 0 255))
+                          (int (coerce-in g 0 255))
+                          (int (coerce-in b 0 255))
+                          255)))))))
+
 (defn vec->ColorMap
   {:added "0.2.3"}
-  ([colors steps]
+  ([colors step-count]
    {:pre [(>= (count colors) 2)]}
-   (let [steps      (->> colors
+   (let [func       (partial colors-between step-count)
+         steps      (->> colors
                          (partition 2 2)
-                         (map (fn [[start end]]
-                                (let [red-start   (.getRed start)
-                                      green-start (.getGreen start)
-                                      blue-start  (.getBlue start)
-                                      red-step    (quot (- (.getRed end) red-start)
-                                                        steps)
-                                      green-step  (quot (- (.getGreen end) green-start)
-                                                        steps)
-                                      blue-step   (quot (- (.getBlue end) blue-start)
-                                                        steps)]
-                                  (->> (range 0 steps)
-                                       (map #(Color. (int (+ (* red-step %) red-start))
-                                                     (int (+ (* green-step %) green-start))
-                                                     (int (+ (* blue-start %) blue-step))
-                                                     255)))
-                                  )))
+                         (map func)
                          (flatten)
                          (vec))
          color-step (/ 1.0 (dec (count steps)))]
@@ -35,16 +53,6 @@
           (->ColorMap))))
   ([colors]
    (vec->ColorMap colors 4)))
-
-(defn- coerce-in
-  "Coerce the given value between [min-val max-val], or return the value
-   if it's already between the two"
-  {:added "0.2.3"}
-  [value min-val max-val]
-  (cond
-    (<= value min-val) min-val
-    (>= value max-val) max-val
-    :else (float value)))
 
 (defn- linear-interpolation-int
   "Interpolate a new value between the two vertexes with a given

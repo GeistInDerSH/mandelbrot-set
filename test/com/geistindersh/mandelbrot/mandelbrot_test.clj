@@ -24,28 +24,28 @@
           colors (colors/vec->ColorMap [Color/RED Color/BLUE])]
       (are [a b] (= a b)
                  (count (create-bitmap-byte-buffer option colors)) (* 4 (:x-res option) (:y-res option))
-                 (vec (create-bitmap-byte-buffer option colors)) [18 0 -63 -1 ;; each row here is an RGBA pixel
-                                                                  25 0 -63 -1
+                 (vec (create-bitmap-byte-buffer option colors)) [19 0 -16 -1 ;; each row here is an RGBA pixel
+                                                                  26 0 -23 -1
                                                                   0 0 0 -1
-                                                                  18 0 -63 -1
-                                                                  0 0 -63 -1
-                                                                  31 0 -63 -1
-                                                                  0 0 0 -1
-                                                                  0 0 0 -1
-                                                                  31 0 -63 -1
-                                                                  0 0 -63 -1
+                                                                  19 0 -16 -1
+                                                                  0 0 -0 -1
+                                                                  31 0 -29 -1
                                                                   0 0 0 -1
                                                                   0 0 0 -1
-                                                                  0 0 0 -1
-                                                                  31 0 -63 -1
-                                                                  0 0 -63 -1
-                                                                  31 0 -63 -1
+                                                                  31 0 -29 -1
+                                                                  0 0 -0 -1
                                                                   0 0 0 -1
                                                                   0 0 0 -1
-                                                                  31 0 -63 -1
-                                                                  0 0 -63 -1
-                                                                  18 0 -63 -1
-                                                                  25 0 -63 -1
                                                                   0 0 0 -1
-                                                                  18 0 -63 -1
-                                                                  0 0 -63 -1]))))
+                                                                  31 0 -29 -1
+                                                                  0 0 -0 -1
+                                                                  31 0 -29 -1
+                                                                  0 0 0 -1
+                                                                  0 0 0 -1
+                                                                  31 0 -29 -1
+                                                                  0 0 -0 -1
+                                                                  19 0 -16 -1
+                                                                  26 0 -23 -1
+                                                                  0 0 0 -1
+                                                                  19 0 -16 -1
+                                                                  0 0 -0 -1]))))
