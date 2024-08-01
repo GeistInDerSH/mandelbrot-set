@@ -5,7 +5,7 @@
 
 (deftest make-options-test
   (testing "Create new Options record with make-options"
-    (let [expected (opt/->Options -1.0 1.0 1000 -1.0 1.0 1000 128 0.0 0.0)]
+    (let [expected (opt/->Options -1.0 1.0 1000 -1.0 1.0 1000 128 0.002002002002002002 0.002002002002002002)]
       (are [actual] (= expected actual)
                     (opt/make-options)
                     (opt/make-options -1.0 1.0 1000 -1.0 1.0 1000)
