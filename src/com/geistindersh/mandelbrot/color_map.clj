@@ -6,6 +6,7 @@
 (defn vec->ColorMap
   {:added "0.2.3"}
   ([colors steps]
+   {:pre [(>= 2 (count colors))]}
    (let [steps      (->> colors
                          (partition 2 2)
                          (map (fn [[start end]]
