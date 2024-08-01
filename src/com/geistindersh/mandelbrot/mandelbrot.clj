@@ -28,22 +28,19 @@
   {:added "0.1.1"}
   [options]
   (let [{:keys [x-min y-min y-res x-res x-delta y-delta limit]} options
-        y-vec (mapv (comp
-                      (partial + y-min)
-                      (partial * y-delta)
-                      float)
-                    (range y-res))
-        x-vec (mapv (comp
-                      (partial + x-min)
-                      (partial * x-delta)
-                      float)
+        x-vec (into []
+                    (comp
+                      (map #(+ x-min %))
+                      (map #(* x-delta %)))
                     (range x-res))]
     (into []
           (comp
+            (map #(+ y-min %))
+            (map #(* y-delta %))
             (map (fn [cy]
-                   (mapv #(mandelbrot % cy limit) x-vec)))
+                   (into [] (map #(mandelbrot % cy limit)) x-vec)))
             cat)
-          y-vec)))
+          (range y-res))))
 
 (defn create-bitmap-byte-buffer
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
