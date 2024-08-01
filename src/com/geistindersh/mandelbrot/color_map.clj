@@ -1,4 +1,5 @@
 (ns com.geistindersh.mandelbrot.color-map
+  (:require [com.geistindersh.mandelbrot.utils :as utils])
   (:import (java.awt Color)))
 
 (defrecord ColorMap [pairs])
@@ -40,11 +41,12 @@
   ([colors step-count]
    {:pre [(>= (count colors) 2)]}
    (let [func       (partial colors-between step-count)
-         steps      (->> colors
-                         (partition 2 1)
-                         (map func)
-                         (flatten)
-                         (vec))
+         steps      (into []
+                          (comp
+                            (utils/window 2)
+                            (map func)
+                            cat)
+                          colors)
          color-step (/ 1.0 (dec (count steps)))]
      (->> steps
           (map-indexed (fn [id color]
@@ -84,11 +86,16 @@
   [color-map index]
   (let [{:keys [pairs]} color-map
         bounded-value (coerce-in index 0.0 1.0)
-        [start stop] (->> pairs
-                          (partition 2 1)
-                          (filter (fn [[start stop]]
-                                    (<= (first start) index (first stop))))
-                          (first))
+        [start stop] (nth (into []
+                                (comp
+                                  (utils/window 2)
+                                  (keep (fn [pair]
+                                          (let [lower (nth (nth pair 0) 0)
+                                                upper (nth (nth pair 1) 0)]
+                                            (when (<= lower index upper)
+                                              pair)))))
+                                pairs)
+                          0)
         fraction      (float (/ (- bounded-value (first start))
                                 (- (first stop) (first start))))]
     (linear-interpolation (second start) (second stop) fraction)))
