@@ -30,13 +30,14 @@
   (let [{:keys [x-min y-min y-res x-res x-delta y-delta limit]} options
         x-vec (into []
                     (comp
+                      (map #(* x-delta %))
                       (map #(+ x-min %))
-                      (map #(* x-delta %)))
+                      )
                     (range x-res))]
     (into []
           (comp
-            (map #(+ y-min %))
             (map #(* y-delta %))
+            (map #(+ y-min %))
             (map (fn [cy]
                    (into [] (map #(mandelbrot % cy limit)) x-vec)))
             cat)
