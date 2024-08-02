@@ -1,6 +1,8 @@
 (ns com.geistindersh.mandelbrot.utils
   (:import (java.util ArrayDeque)))
 
+(set! *warn-on-reflection* true)
+
 (defn window
   "A transducer compatible version of partial"
   ([^long n] (window n 1))

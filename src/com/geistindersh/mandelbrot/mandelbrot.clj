@@ -5,6 +5,8 @@
   (:import
     (java.awt Color)))
 
+(set! *warn-on-reflection* true)
+
 (defn mandelbrot
   "Calculate the mandelbrot value, based on the given constants"
   {:added "0.1.1"}
@@ -31,8 +33,7 @@
         x-vec (into []
                     (comp
                       (map #(* x-delta %))
-                      (map #(+ x-min %))
-                      )
+                      (map #(+ x-min %)))
                     (range x-res))]
     (into []
           (comp
@@ -55,7 +56,8 @@
         dist          (- upper-bound lower-bound)
         color-options (into []
                             (comp
-                              (map #(math/pow (/ % dist) 0.5))
+                              (map #(/ % dist))
+                              (map #(math/pow % 0.5))
                               (map #(color/get-at color-map %)))
                             (range dist))]
     (->> buffer
@@ -68,7 +70,7 @@
                  (keep (fn [val]
                          (when (some? val)
                            val)))
-                 (map (fn [color]
+                 (map (fn [^Color color]
                         [(unchecked-byte (* 255 (.getRed color)))
                          (unchecked-byte (* 255 (.getGreen color)))
                          (unchecked-byte (* 255 (.getBlue color)))

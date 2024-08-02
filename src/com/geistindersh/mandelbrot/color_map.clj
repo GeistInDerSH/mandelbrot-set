@@ -2,6 +2,8 @@
   (:require [com.geistindersh.mandelbrot.utils :as utils])
   (:import (java.awt Color)))
 
+(set! *warn-on-reflection* true)
+
 (defrecord ColorMap [pairs])
 
 (defn- coerce-in
@@ -16,7 +18,7 @@
 
 (defn- colors-between
   "Generate a sequence of colors between the given start and end colors"
-  [step-count [start end]]
+  [step-count [^Color start ^Color end]]
   (let [red-start   (.getRed start)
         red-step    (/ (- (.getRed end) red-start)
                        step-count)
@@ -62,17 +64,17 @@
    https://en.wikipedia.org/wiki/Linear_interpolation#Programming_language_support"
   {:added "0.2.3"}
   [v0 v1 alpha]
-  (let [v0   (float v0)
-        v1   (float v1)
-        frac (float alpha)]
-    (mod (+ (* v0 (- 1 frac))
-            (* v1 frac))
+  (let [v0    (float v0)
+        v1    (float v1)
+        alpha (float alpha)]
+    (mod (+ (* v0 (- 1 alpha))
+            (* v1 alpha))
          255)))
 
 (defn- linear-interpolation
   "Interpolate the color between the two given colors"
   {:added "0.2.3"}
-  ([c0 c1 alpha]
+  ([^Color c0 ^Color c1 alpha]
    (let [r (linear-interpolation-int (.getRed c0) (.getRed c1) alpha)
          g (linear-interpolation-int (.getGreen c0) (.getGreen c1) alpha)
          b (linear-interpolation-int (.getBlue c0) (.getBlue c1) alpha)

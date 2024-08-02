@@ -5,6 +5,8 @@
   (:gen-class)
   (:import (java.awt Color)))
 
+(set! *warn-on-reflection* true)
+
 (defn -main [& _]
   (let [option (opt/make-options -1.5 0.0 1000 0.0 1.0 1000)
         colors (color/vec->ColorMap [Color/RED Color/BLUE Color/GREEN Color/GRAY])]
