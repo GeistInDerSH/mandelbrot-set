@@ -101,3 +101,47 @@
         fraction      (float (/ (- bounded-value (first start))
                                 (- (first stop) (first start))))]
     (linear-interpolation (second start) (second stop) fraction)))
+
+(def plasma
+  "Dark-Blue Purple Magenta Pink Salmon Light-Orange Yellow Bright-Yellow"
+  (delay
+    (->ColorMap [[0.00 (Color. 13 8 135)]
+                 [0.14 (Color. 84 2 163)]
+                 [0.29 (Color. 139 10 165)]
+                 [0.43 (Color. 185 50 137)]
+                 [0.57 (Color. 219 92 104)]
+                 [0.71 (Color. 244 136 73)]
+                 [0.86 (Color. 254 188 42)]
+                 [1.00 (Color. 240 249 33)]])))
+(def reverse-plasma
+  "Same as plasma, but the order of the colors are reversed"
+  (delay
+    (->ColorMap
+      [[0.0 (Color. 240 249 33)]
+       [0.14 (Color. 254 188 42)]
+       [0.29 (Color. 244 136 73)]
+       [0.43 (Color. 219 92 104)]
+       [0.57 (Color. 185 50 137)]
+       [0.71 (Color. 139 10 165)]
+       [0.86 (Color. 84 2 163)]
+       [1.0 (Color. 13 8 135)]])))
+(def rb-gr
+  "Red Blue Dark-Gray"
+  (delay
+    (vec->ColorMap [Color/RED Color/BLUE Color/DARK_GRAY])))
+(def rb-gr-100
+  "Red Blue Dark-Gray with 100 steps between each one"
+  (delay
+    (vec->ColorMap [Color/RED Color/BLUE Color/DARK_GRAY] 100)))
+(def rb-ggr-100
+  "Red Blue with 100 steps, and Green Gray with 100 steps, with no
+   steps between Blue and Green"
+  (delay
+    (let [rb   (:pairs (vec->ColorMap [Color/RED Color/BLUE] 100))
+          g-gr (:pairs (vec->ColorMap [Color/GREEN Color/GRAY] 100))]
+      (->ColorMap (vec (concat rb g-gr))))))
+(def pink-purple-100
+  "Pink Purple with 100 steps.
+   Note: The resulting image contains neither"
+  (delay
+    (vec->ColorMap [Color/PINK (Color. 128 0 128 1)] 100)))
