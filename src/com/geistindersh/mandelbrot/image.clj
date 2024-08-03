@@ -8,8 +8,6 @@
            (java.awt Color)
            (java.nio.file Files OpenOption StandardOpenOption)))
 
-(set! *warn-on-reflection* true)
-
 (defn- make-bitmap
   "Create a Bitmap with the pixels of the image filled in"
   {:added "0.2.6"}

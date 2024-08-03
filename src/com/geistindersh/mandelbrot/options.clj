@@ -1,7 +1,5 @@
 (ns com.geistindersh.mandelbrot.options)
 
-(set! *warn-on-reflection* true)
-
 (defrecord
   ^{:added "0.1.1"}
   Options [x-min x-max x-res y-min y-max y-res limit x-delta y-delta])

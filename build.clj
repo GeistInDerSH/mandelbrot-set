@@ -27,6 +27,7 @@
   (build/copy-dir {:src-dirs   ["resources"]
                    :target-dir class-dir})
   (build/compile-clj {:basis        @basis
+                      :bindings     {#'*warn-on-reflection* true}
                       :compile-opts {:direct-linking true}
                       :ns-compile   '[com.geistindersh.mandelbrot.core]
                       :class-dir    class-dir})

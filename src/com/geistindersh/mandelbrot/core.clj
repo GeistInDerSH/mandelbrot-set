@@ -4,8 +4,6 @@
             [com.geistindersh.mandelbrot.options :as opt])
   (:gen-class))
 
-(set! *warn-on-reflection* true)
-
 (defn -main [& _]
   (let [option (opt/make-options -1.0 0.0 5000 0.0 1.0 5000)]
     (time

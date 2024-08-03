@@ -5,8 +5,6 @@
   (:import
     (java.awt Color)))
 
-(set! *warn-on-reflection* true)
-
 (defn mandelbrot
   "Calculate the mandelbrot value, based on the given constants"
   {:added "0.1.1"}

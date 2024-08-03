@@ -2,8 +2,6 @@
   (:require [com.geistindersh.mandelbrot.utils :as utils])
   (:import (java.awt Color)))
 
-(set! *warn-on-reflection* true)
-
 (defrecord ColorMap [pairs])
 
 (defn- coerce-in
