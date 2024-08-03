@@ -47,10 +47,11 @@
                             (map func)
                             cat)
                           colors)
-         color-step (/ 1.0 (dec (count steps)))]
+         color-step (double (/ 1.0
+                               (dec (count steps))))]
      (->> steps
           (map-indexed (fn [id color]
-                         [(* id color-step) color]))
+                         [(double (* id color-step)) color]))
           (vec)
           (->ColorMap))))
   ([colors]
@@ -62,9 +63,9 @@
    https://en.wikipedia.org/wiki/Linear_interpolation#Programming_language_support"
   {:added "0.2.3"}
   [v0 v1 alpha]
-  (let [v0    (float v0)
-        v1    (float v1)
-        alpha (float alpha)]
+  (let [v0    (double v0)
+        v1    (double v1)
+        alpha (double alpha)]
     (mod (+ (* v0 (- 1 alpha))
             (* v1 alpha))
          255)))
@@ -96,8 +97,8 @@
                                               pair)))))
                                 pairs)
                           0)
-        fraction      (float (/ (- bounded-value (first start))
-                                (- (first stop) (first start))))]
+        fraction      (double (/ (- bounded-value (first start))
+                                 (- (first stop) (first start))))]
     (linear-interpolation (second start) (second stop) fraction)))
 
 (def plasma

@@ -10,17 +10,16 @@
   {:added "0.1.1"}
   [cx cy limit]
   (loop [i  (int 0)
-         xn (float 0.0)
-         yn (float 0.0)]
-    (let [temp (float (* xn yn))
-          xn2  (float (* xn xn))
-          yn2  (float (* yn yn))]
+         xn (double 0.0)
+         yn (double 0.0)]
+    (let [xn2 (double (* xn xn))
+          yn2 (double (* yn yn))]
       (if (or (> (+ xn2 yn2) 16.0)
               (>= i limit))
         i
         (recur (inc i)
                (+ (- xn2 yn2) cx)
-               (+ temp temp cy))))))
+               (+ (* 2.0 xn yn) cy))))))
 
 (defn create-buffer
   "Generate a 1-D array of size x-res * y-res, and calculate the mandelbrot
