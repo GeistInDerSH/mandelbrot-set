@@ -30,4 +30,4 @@ jobs:
         run: clj-kondo --lint deps.edn src resources test
 
       - name: Package Clojure project
-        run: clojure -X:build jar
+        run: clojure -T:build jar
