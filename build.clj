@@ -5,16 +5,15 @@
     (java.time LocalDateTime ZoneId)
     (java.time.format DateTimeFormatter)))
 
-(def latest-revision (build/git-process {:git-args "rev-parse --short HEAD"}))
-(defn -get-patch-version []
+(def latest-revision (delay (build/git-process {:git-args "rev-parse --short HEAD"})))
+(defn- get-patch-version []
   (let [last-version-bump-commit "bbd0da60"                 ;; Count the commits since the version bump as the patches
-        git-arg                  (format "rev-list %s...%s --count" last-version-bump-commit latest-revision)]
-    (build/git-process {:git-args git-arg})))
+        git-arg                  (format "rev-list %s...%s --count" last-version-bump-commit @latest-revision)
+        patches-since-bump       (build/git-process {:git-args git-arg})]
+    (format "0.2.%s" patches-since-bump)))
 
-(def lib 'mandelbrot)
-(def version (format "0.2.%s" (-get-patch-version)))
 (def class-dir "target/classes")
-(def uber-file (format "target/%s-%s-standalone.jar" (name lib) version))
+(def uber-file "target/mandelbrot.jar")
 
 ;; delay to defer side effects (artifact downloads)
 (def basis (delay (build/create-basis {:project "deps.edn"})))
@@ -35,7 +34,8 @@
                       :class-dir    class-dir})
   (build/uber {:class-dir class-dir
                :uber-file uber-file
-               :manifest  {"Revision"      latest-revision
+               :manifest  {"Revision"      @latest-revision
+                           "Build-Version" (get-patch-version)
                            "Build-Date"    (.format (LocalDateTime/now (ZoneId/of "America/Chicago"))
                                                     (DateTimeFormatter/ofPattern "yyyy/MM/dd HH:mm:SS"))
                            "Built-By"      (System/getenv "USER")
