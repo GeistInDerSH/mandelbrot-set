@@ -1,6 +1,6 @@
 (ns com.geistindersh.mandelbrot.color-map-test
   (:require [clojure.test :refer [are deftest is testing]]
-            [com.geistindersh.mandelbrot.color-map :refer [->ColorMap get-at vec->ColorMap]])
+            [com.geistindersh.mandelbrot.color-map :refer [->ColorMap vec->ColorMap]])
   (:import (java.awt Color)))
 
 (deftest vec-to-ColorMap-test
@@ -32,12 +32,3 @@
                                                                                                [0.8181818181818182 (Color. 16 207 16)]
                                                                                                [0.9090909090909092 (Color. 32 159 32)]
                                                                                                [1.0 (Color. 48 111 48)]]))))
-
-(deftest get-at-test
-  (let [colors (vec->ColorMap [Color/RED Color/BLUE Color/GREEN Color/DARK_GRAY])]
-    (testing "Getting the Linear Interpolation of the closest Color to the index"
-      (are [a b] (= a b)
-                 (get-at colors 0.05) (Color. 219 0 34 0)
-                 (get-at colors 0.42) (Color. 0 39 215 0)
-                 (get-at colors 0.5) (Color. 0 95 159 0)
-                 (get-at colors 1.0) (Color. 48 111 48 0)))))
