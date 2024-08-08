@@ -19,5 +19,30 @@
   ([x-min x-max x-res y-min y-max y-res]
    (make-options x-min x-max x-res y-min y-max y-res 128))
   ([]
-   (make-options -1.0 1.0 1000
-                 -1.0 1.0 1000)))
+   (make-options -1.0 1.0 1000 -1.0 1.0 1000)))
+
+(defn x-range
+  "Eagerly generate all values for the x-resolution"
+  [option]
+  (let [{:keys [x-delta x-min x-res]} option]
+    (into []
+          (comp
+            (map #(* % x-delta))
+            (map #(+ % x-min)))
+          (range x-res))))
+
+(defn y-range [option]
+  "Eagerly generate all values for the y-resolution"
+  (let [{:keys [y-delta y-min y-res]} option]
+    (into []
+          (comp
+            (map #(* % y-delta))
+            (map #(+ % y-min)))
+          (range y-res))))
+
+(defn image-size
+  "Get the number of bytes in the image"
+  [option]
+  (* 4
+     (:x-res option)
+     (:y-res option)))
