@@ -1,76 +1,68 @@
 (ns com.geistindersh.mandelbrot.mandelbrot
   (:require
     [clojure.math :as math]
-    [com.geistindersh.mandelbrot.color-map :as color])
+    [com.geistindersh.mandelbrot.color-map :as colors]
+    [com.geistindersh.mandelbrot.color-map])
   (:import
     (java.awt Color)))
+
+(def log-2 (math/log 2))
+(def xyn2-limit (double (bit-shift-left 1 16)))
 
 (defn mandelbrot
   "Calculate the mandelbrot value, based on the given constants"
   {:added "0.1.1"}
-  [cx cy limit]
-  (loop [i  (int 0)
+  ^"java.lang.Double" [cx cy limit]
+  (loop [i  0
          xn (double 0.0)
          yn (double 0.0)]
     (let [xn2 (double (* xn xn))
           yn2 (double (* yn yn))]
-      (if (or (> (+ xn2 yn2) 16.0)
-              (>= i limit))
-        i
-        (recur (inc i)
-               (+ (- xn2 yn2) cx)
-               (+ (* 2.0 xn yn) cy))))))
+      (cond
+        (and (<= (+ xn2 yn2) xyn2-limit)
+             (< i limit)) (recur (inc i)
+                                 (+ (- xn2 yn2)
+                                    cx)
+                                 (+ (* 2 xn yn)
+                                    cy))
+        (< i limit) (let [log-zn (/ (math/log (+ xn2 yn2)) 2)
+                          nu     (/ (math/log (/ log-zn log-2))
+                                    log-2)]
+                      (- (inc i)
+                         nu))
+        :else i))))
 
-(defn create-buffer
-  "Generate a 1-D array of size x-res * y-res, and calculate the mandelbrot
-   value for each entry."
-  {:added "0.1.1"}
-  [options]
-  (let [{:keys [x-min y-min y-res x-res x-delta y-delta limit]} options
-        x-vec (into []
-                    (comp
-                      (map #(* x-delta %))
-                      (map #(+ x-min %)))
-                    (range x-res))]
-    (into []
-          (comp
-            (map #(* y-delta %))
-            (map #(+ y-min %))
-            (map (fn [cy]
-                   (into [] (map #(mandelbrot % cy limit)) x-vec)))
-            cat)
-          (range y-res))))
+(defn get-rgba-for-pixel
+  "Get the red-green-blue-alpha value for the given x y pixel"
+  [colors x y limit]
+  (let [val       (double (mandelbrot x y limit))
+        alpha     (double (mod val 1))
+        index     (int (math/floor val))
+        ^Color c0 (nth colors index Color/BLACK)
+        ^Color c1 (nth colors (inc index) Color/BLACK)
+        r         (int (colors/linear-interpolation-int (.getRed c0) (.getRed c1) alpha))
+        g         (int (colors/linear-interpolation-int (.getGreen c0) (.getGreen c1) alpha))
+        b         (int (colors/linear-interpolation-int (.getBlue c0) (.getBlue c1) alpha))]
+    [r g b -1]))
 
 (defn create-bitmap-byte-buffer
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
-  {:added "0.2.4"}
-  [options color-map]
-  (let [{:keys [limit]} options
-        buffer        (create-buffer options)
-        lower-bound   (apply min buffer)
-        upper-bound   (inc (apply max buffer))
-        dist          (- upper-bound lower-bound)
-        color-options (into []
-                            (comp
-                              (map #(/ % dist))
-                              (map #(math/pow % 0.5))
-                              (map #(color/get-at color-map %)))
-                            (range dist))]
-    (->> buffer
+  ^"[B" [options colors]
+  (let [{:keys [x-res y-res x-min y-min x-delta y-delta limit]} options
+        y-range  (into []
+                       (comp
+                         (map #(* % y-delta))
+                         (map #(+ % y-min)))
+                       (range y-res))
+        rgb-func (partial get-rgba-for-pixel colors)]
+    (->> (range x-res)
          (into []
                (comp
-                 (map (fn [val]
-                        (if (>= val limit)
-                          Color/BLACK
-                          (get color-options (- val lower-bound)))))
-                 (keep (fn [val]
-                         (when (some? val)
-                           val)))
-                 (map (fn [^Color color]
-                        [(unchecked-byte (* 255 (.getRed color)))
-                         (unchecked-byte (* 255 (.getGreen color)))
-                         (unchecked-byte (* 255 (.getBlue color)))
-                         -1]))
+                 (map #(* % x-delta))
+                 (map #(+ % x-min))
+                 (map (fn [x]
+                        (into [] (map #(rgb-func x % limit)) y-range)))
+                 cat
                  cat))
          (byte-array))))
