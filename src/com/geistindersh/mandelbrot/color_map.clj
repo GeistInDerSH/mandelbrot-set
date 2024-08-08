@@ -57,7 +57,7 @@
   ([colors]
    (vec->ColorMap colors 4)))
 
-(defn- linear-interpolation-int
+(defn linear-interpolation-int
   "Interpolate a new value between the two vertexes with a given
    alpha value.
    https://en.wikipedia.org/wiki/Linear_interpolation#Programming_language_support"
