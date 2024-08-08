@@ -2,6 +2,10 @@ name: Test and Package project
 on:
   pull_request:
   push:
+    paths:
+      - '**.clj'
+      - '**.edn'
+      - '**/ci.yaml'
     branches:
       - main
 jobs:
