@@ -1,8 +1,7 @@
 (ns com.geistindersh.mandelbrot.color-map
-  (:require [com.geistindersh.mandelbrot.utils :as utils])
+  (:require [clojure.math :as math]
+            [com.geistindersh.mandelbrot.utils :as utils])
   (:import (java.awt Color)))
-
-(defrecord ColorMap [pairs])
 
 (defn- coerce-in
   "Coerce the given value between [min-val max-val], or return the value
@@ -36,26 +35,21 @@
                           (int (coerce-in b 0 255))
                           255)))))))
 
-(defn vec->ColorMap
-  {:added "0.2.3"}
-  ([colors step-count]
-   {:pre [(>= (count colors) 2)]}
-   (let [func       (partial colors-between step-count)
-         steps      (into []
-                          (comp
-                            (utils/window 2)
-                            (map func)
-                            cat)
-                          colors)
-         color-step (double (/ 1.0
-                               (dec (count steps))))]
-     (->> steps
-          (map-indexed (fn [id color]
-                         [(double (* id color-step)) color]))
-          (vec)
-          (->ColorMap))))
-  ([colors]
-   (vec->ColorMap colors 4)))
+(defrecord Gradient [colors default-color])
+
+(defn vec->Gradient
+  ([v] (vec->Gradient v 256))
+  ([v size] (vec->Gradient v size Color/BLACK))
+  ([v size default]
+   (let [steps  (->> v count dec (min size) (/ size) (math/ceil))
+         colors (into []
+                      (comp
+                        (utils/window 2)
+                        (map #(colors-between steps %))
+                        cat
+                        (take size))
+                      v)]
+     (->Gradient colors default))))
 
 (defn linear-interpolation
   "Interpolate a new value between the two vertexes with a given
