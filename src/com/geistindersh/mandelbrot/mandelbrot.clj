@@ -36,16 +36,17 @@
 (defn create-bitmap-byte-buffer
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
-  [options colors]
-  (let [{:keys [limit]} options
+  [options gradient]
+  (let [{:keys [colors default-color]} gradient
+        {:keys [limit]} options
         arr (ArrayList. (int (option/image-size options)))]
     (doseq [x (option/x-range options)
             y (option/y-range options)
             :let [val       (double (mandelbrot x y limit))
                   alpha     (double (mod val 1))
                   index     (int (math/floor val))
-                  ^Color c0 (nth colors index Color/BLACK)
-                  ^Color c1 (nth colors (inc index) Color/BLACK)]]
+                  ^Color c0 (nth colors index default-color)
+                  ^Color c1 (nth colors (inc index) default-color)]]
       (.add arr (colors/linear-interpolation (.getRed c0) (.getRed c1) alpha))
       (.add arr (colors/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
       (.add arr (colors/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
