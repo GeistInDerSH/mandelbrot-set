@@ -10,6 +10,38 @@
 (def log-2 (math/log 2))
 (def xyn2-limit (double (bit-shift-left 1 16)))
 
+(defn mandelbrot-periodicity-checking
+  "Calculate the mandelbrot value, based on the given constants"
+  {:added "0.1.1"}
+  ^"java.lang.Double" [^double cx ^double cy ^long limit]
+  (loop [i      (long 0)
+         xn     (double 0.0)
+         yn     (double 0.0)
+         x-old  (double 0.0)
+         y-old  (double 0.0)
+         period (long 0)]
+    (let [xn2 (double (* xn xn))
+          yn2 (double (* yn yn))]
+      (cond
+        (and (< (+ xn2 yn2) xyn2-limit)
+             (< i limit)) (let [x-new (+ (- xn2 yn2)
+                                         cx)
+                                y-new (+ (* (+ xn xn) yn)
+                                         cy)]
+                            (cond
+                              (and (= x-new x-old)
+                                   (= y-new y-old)) limit
+                              (< period 20) (recur (inc i) x-new y-new x-old y-old (inc period))
+                              :else (recur (inc i) x-new y-new x-new y-new 0)
+                              ))
+
+        (< i limit) (let [log-zn (/ (math/log (+ xn2 yn2)) 2)
+                          nu     (/ (math/log (/ log-zn log-2))
+                                    log-2)]
+                      (double (- (inc i)
+                                 nu)))
+        :else (double i)))))
+
 (defn mandelbrot
   "Calculate the mandelbrot value, based on the given constants"
   {:added "0.1.1"}
