@@ -102,7 +102,7 @@
     (doseq [task tasks] @task)
     buff))
 
-(defn create-byte-buffer-parallel
+(defn- create-byte-buffer-parallel
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
   [options gradient]
