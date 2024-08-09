@@ -40,7 +40,7 @@
             (map #(+ % y-min)))
           (range y-res))))
 
-(defn image-size
+(defn image-buffer-size
   "Get the number of bytes in the image"
   [option]
   (* 4

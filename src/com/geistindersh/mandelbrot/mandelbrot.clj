@@ -71,7 +71,7 @@
   [options gradient]
   (let [{:keys [colors default-color]} gradient
         {:keys [limit]} options
-        arr (ArrayList. (int (option/image-size options)))]
+        arr (ArrayList. (int (option/image-buffer-size options)))]
     (doseq [x (option/x-range options)
             y (option/y-range options)
             :let [val       (double (mandelbrot-periodicity-checking x y limit))
@@ -108,7 +108,7 @@
   [options gradient]
   (let [{:keys [colors default-color]} gradient
         vals (create-mandelbrot-vals-parallel options)
-        arr  (ArrayList. (int (option/image-size options)))]
+        arr  (ArrayList. (int (option/image-buffer-size options)))]
     (doseq [val vals
             :let [alpha     (double (mod val 1))
                   index     (int (math/floor val))

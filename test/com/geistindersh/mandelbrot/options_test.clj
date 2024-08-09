@@ -24,4 +24,4 @@
 (deftest image-size-test
   (testing "Image Size matches expected"
     (is (= (* 4 1000 1000)
-           (opt/image-size testing-option)))))
+           (opt/image-buffer-size testing-option)))))
