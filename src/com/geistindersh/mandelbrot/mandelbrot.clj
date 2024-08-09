@@ -65,7 +65,7 @@
                                  nu)))
         :else (double i)))))
 
-(defn- create-bitmap-byte-buffer-serial
+(defn- create-byte-buffer-serial
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
   [options gradient]
@@ -102,7 +102,7 @@
     (doseq [task tasks] @task)
     buff))
 
-(defn create-bitmap-byte-buffer-parallel
+(defn create-byte-buffer-parallel
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
   [options gradient]
@@ -120,9 +120,9 @@
       (.add arr -1))
     (bytes (byte-array (.toArray arr)))))
 
-(defn create-bitmap-byte-buffer
-  ([options gradient] (create-bitmap-byte-buffer options gradient true))
+(defn create-byte-buffer
+  ([options gradient] (create-byte-buffer options gradient true))
   ([options gradient parallel?]
    (if parallel?
-     (create-bitmap-byte-buffer-parallel options gradient)
-     (create-bitmap-byte-buffer-serial options gradient))))
+     (create-byte-buffer-parallel options gradient)
+     (create-byte-buffer-serial options gradient))))

@@ -2,7 +2,7 @@
   (:require
     [clojure.test :refer [are deftest is testing]]
     [com.geistindersh.mandelbrot.color-map :as colors]
-    [com.geistindersh.mandelbrot.mandelbrot :refer [create-bitmap-byte-buffer mandelbrot-periodicity-checking]]
+    [com.geistindersh.mandelbrot.mandelbrot :refer [create-byte-buffer mandelbrot-periodicity-checking]]
     [com.geistindersh.mandelbrot.options :as options])
   (:import
     (java.awt Color)
@@ -23,13 +23,13 @@
                (mandelbrot-periodicity-checking 0.41741741741741745 0.35335335335335327 128) 43.28587721842625
                (mandelbrot-periodicity-checking 0.26726726726726735 0.18918918918918926 128) 128.0)))
 
-(deftest mandelbrot-create-bitmap-byte-buffer-test
+(deftest mandelbrot-create-byte-buffer-test
   (testing "Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-bitmap-byte-buffer testing-option testing-gradient true)
-                       ^bytes (create-bitmap-byte-buffer testing-option testing-gradient true))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient true)
+                       ^bytes (create-byte-buffer testing-option testing-gradient true))))
   (testing "Serial buffers are the same"
-    (is (Arrays/equals ^bytes (create-bitmap-byte-buffer testing-option testing-gradient false)
-                       ^bytes (create-bitmap-byte-buffer testing-option testing-gradient false))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient false)
+                       ^bytes (create-byte-buffer testing-option testing-gradient false))))
   (testing "Serial and Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-bitmap-byte-buffer testing-option testing-gradient false)
-                       ^bytes (create-bitmap-byte-buffer testing-option testing-gradient true)))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient false)
+                       ^bytes (create-byte-buffer testing-option testing-gradient true)))))

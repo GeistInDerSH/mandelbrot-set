@@ -12,7 +12,7 @@
         color-info  (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
         image-info  (ImageInfo. color-info x-res y-res)
         bitmap      (Bitmap.)
-        byte-buffer (mandelbrot/create-bitmap-byte-buffer option colors)]
+        byte-buffer (mandelbrot/create-byte-buffer option colors)]
     (.allocPixels bitmap image-info)
     (.installPixels bitmap byte-buffer)
     bitmap))
