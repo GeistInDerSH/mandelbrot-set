@@ -5,7 +5,7 @@
   (:gen-class)
   (:import (java.awt Color)))
 
-;; (defmacro with-profiling [body]
+;; (defmacro with-profiling [& body]
 ;;   `(do
 ;;      (prof/start {:event :cpu})
 ;;      ~@body
