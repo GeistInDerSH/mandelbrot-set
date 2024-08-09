@@ -1,43 +1,26 @@
 (ns com.geistindersh.mandelbrot.color-map-test
-  (:require [clojure.test :refer [are deftest is testing]]
-            [com.geistindersh.mandelbrot.color-map :refer [->ColorMap get-at vec->ColorMap]])
+  (:require [clojure.test :refer [are deftest testing]]
+            [com.geistindersh.mandelbrot.color-map :refer [vec->Gradient]])
   (:import (java.awt Color)))
 
-(deftest vec-to-ColorMap-test
-  (testing "Too few colors given"
-    (is (thrown? Error (vec->ColorMap [Color/RED]))))
-  (testing "Generating ColorMap from a vector of Colors"
-    (are [a b] (= a b)
-               (vec->ColorMap [Color/RED Color/BLUE]) (->ColorMap [[0.0 (Color. 255 0 0)]
-                                                                   [0.3333333333333333 (Color. 191 0 63)]
-                                                                   [0.6666666666666666 (Color. 127 0 127)]
-                                                                   [1.0 (Color. 63 0 191)]])
-               (vec->ColorMap [Color/RED Color/BLUE Color/GREEN]) (->ColorMap [[0.0 (Color. 255 0 0)]
-                                                                               [0.14285714285714285 (Color. 191 0 63)]
-                                                                               [0.2857142857142857 (Color. 127 0 127)]
-                                                                               [0.42857142857142855 (Color. 63 0 191)]
-                                                                               [0.5714285714285714 (Color. 0 0 255)]
-                                                                               [0.7142857142857142 (Color. 0 63 191)]
-                                                                               [0.8571428571428571 (Color. 0 127 127)]
-                                                                               [1.0 (Color. 0 191 63)]])
-               (vec->ColorMap [Color/RED Color/BLUE Color/GREEN Color/DARK_GRAY]) (->ColorMap [[0.0 (Color. 255 0 0)]
-                                                                                               [0.09090909090909091 (Color. 191 0 63)]
-                                                                                               [0.18181818181818182 (Color. 127 0 127)]
-                                                                                               [0.2727272727272727 (Color. 63 0 191)]
-                                                                                               [0.36363636363636365 (Color. 0 0 255)]
-                                                                                               [0.4545454545454546 (Color. 0 63 191)]
-                                                                                               [0.5454545454545454 (Color. 0 127 127)]
-                                                                                               [0.6363636363636364 (Color. 0 191 63)]
-                                                                                               [0.7272727272727273 (Color. 0 255 0)]
-                                                                                               [0.8181818181818182 (Color. 16 207 16)]
-                                                                                               [0.9090909090909092 (Color. 32 159 32)]
-                                                                                               [1.0 (Color. 48 111 48)]]))))
-
-(deftest get-at-test
-  (let [colors (vec->ColorMap [Color/RED Color/BLUE Color/GREEN Color/DARK_GRAY])]
-    (testing "Getting the Linear Interpolation of the closest Color to the index"
-      (are [a b] (= a b)
-                 (get-at colors 0.05) (Color. 219 0 34 0)
-                 (get-at colors 0.42) (Color. 0 39 215 0)
-                 (get-at colors 0.5) (Color. 0 95 159 0)
-                 (get-at colors 1.0) (Color. 48 111 48 0)))))
+(deftest vec->Gradient-test
+  (testing "The number of colors in the gradient are what we expect"
+    (are [a b] (= a (count (:colors b)))
+               256 (vec->Gradient [Color/RED Color/BLUE])
+               128 (vec->Gradient [Color/RED Color/BLUE] 128)
+               64 (vec->Gradient [(Color. (float 0) (float 0) (float 0.2))
+                                  Color/BLUE
+                                  Color/LIGHT_GRAY
+                                  (Color. (float 0.9) (float 0.7) (float 0.4))
+                                  Color/GRAY]
+                                 64)
+               2 (vec->Gradient [(Color. (float 0) (float 0) (float 0.2))
+                                 Color/BLUE
+                                 Color/LIGHT_GRAY
+                                 (Color. (float 0.9) (float 0.7) (float 0.4))
+                                 Color/GRAY]
+                                2)))
+  (testing "The default color is what we expect"
+    (are [a b] (= a (:default-color b))
+               Color/BLACK (vec->Gradient [Color/RED Color/BLUE])
+               Color/PINK (vec->Gradient [Color/RED Color/BLUE] 128 Color/PINK))))

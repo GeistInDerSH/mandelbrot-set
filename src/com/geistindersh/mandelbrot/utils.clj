@@ -1,5 +1,8 @@
 (ns com.geistindersh.mandelbrot.utils
-  (:import (java.util ArrayDeque)))
+  (:require
+    [clj-async-profiler.core :as prof])
+  (:import
+    (java.util ArrayDeque)))
 
 (defn window
   "A transducer compatible version of partial"
@@ -18,3 +21,9 @@
                 (.removeFirst a))
               (rf result v))
             result)))))))
+
+(defmacro with-profiling [& body]
+  `(do
+     (prof/start {:event :cpu})
+     ~@body
+     (println (.toString (prof/stop {:generate-flamegraph? true})))))

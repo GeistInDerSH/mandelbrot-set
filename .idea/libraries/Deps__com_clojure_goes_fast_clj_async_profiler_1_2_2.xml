@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Deps: com.clojure-goes-fast/clj-async-profiler:1.2.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/clojure-goes-fast/clj-async-profiler/1.2.2/clj-async-profiler-1.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
