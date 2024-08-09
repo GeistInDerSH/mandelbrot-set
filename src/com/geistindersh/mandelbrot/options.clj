@@ -31,8 +31,9 @@
             (map #(+ % x-min)))
           (range x-res))))
 
-(defn y-range [option]
+(defn y-range
   "Eagerly generate all values for the y-resolution"
+  [option]
   (let [{:keys [y-delta y-min y-res]} option]
     (into []
           (comp

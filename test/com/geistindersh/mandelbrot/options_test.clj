@@ -1,7 +1,6 @@
 (ns com.geistindersh.mandelbrot.options-test
   (:require
     [clojure.test :refer [are deftest is testing]]
-    [com.geistindersh.mandelbrot.options :as option]
     [com.geistindersh.mandelbrot.options :as opt]))
 
 (def testing-option (opt/->Options -1.0 1.0 1000 -1.0 1.0 1000 128 0.002002002002002002 0.002002002002002002))
@@ -15,10 +14,10 @@
 
 (deftest range-tests
   (testing "x-range"
-    (is (= (count (option/x-range testing-option))
+    (is (= (count (opt/x-range testing-option))
            1000)))
   (testing "x-range"
-    (is (= (count (option/y-range testing-option))
+    (is (= (count (opt/y-range testing-option))
            1000))))
 
 (deftest image-size-test
