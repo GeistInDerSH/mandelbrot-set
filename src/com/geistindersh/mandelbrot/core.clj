@@ -1,13 +1,17 @@
 (ns com.geistindersh.mandelbrot.core
-  (:require [clj-async-profiler.core :as prof]
-            [com.geistindersh.mandelbrot.color-map :as colors]
+  (:require [com.geistindersh.mandelbrot.color-map :as colors]
             [com.geistindersh.mandelbrot.image :as image]
             [com.geistindersh.mandelbrot.options :as opt])
   (:gen-class)
   (:import (java.awt Color)))
 
+;; (defmacro with-profiling [body]
+;;   `(do
+;;      (prof/start {:event :cpu})
+;;      ~@body
+;;      (println (.toString (prof/stop {:generate-flamegraph? true})))))
+
 (defn -main [& _]
-  (prof/start {:event :cpu})
   (let [option (opt/make-options -1.0 0.0 5000 0.0 1.0 5000)
         cv     [(Color. (float 0) (float 0) (float 0.2))
                 Color/BLUE
@@ -17,5 +21,5 @@
         color  (colors/vec->Gradient cv 128)]
     (dotimes [_ 1]
       (time (image/create-mandelbrot-png "example/png/smooth.png" option color)))
-    (println (.toString (prof/stop {:generate-flamegraph? true})))
+    (shutdown-agents)
     ))
