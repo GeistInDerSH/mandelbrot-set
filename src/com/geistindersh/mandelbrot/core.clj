@@ -5,12 +5,6 @@
   (:gen-class)
   (:import (java.awt Color)))
 
-;; (defmacro with-profiling [& body]
-;;   `(do
-;;      (prof/start {:event :cpu})
-;;      ~@body
-;;      (println (.toString (prof/stop {:generate-flamegraph? true})))))
-
 (defn -main [& _]
   (let [option (opt/make-options -1.0 0.0 5000 0.0 1.0 5000)
         cv     [(Color. (float 0) (float 0) (float 0.2))
