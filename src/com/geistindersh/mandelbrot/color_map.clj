@@ -8,7 +8,8 @@
 (defn- coerce-in
   "Coerce the given value between [min-val max-val], or return the value
    if it's already between the two"
-  {:added "0.2.3"}
+  {:inline (fn [v l u] `(min (max ~v ~l) ~u))
+   :added  "0.2.3"}
   [value min-val max-val]
   (cond
     (<= value min-val) min-val
