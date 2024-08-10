@@ -11,9 +11,9 @@
    and save the result as a PNG file"
   {:added "0.2.6"}
   [file-name option colors]
-  (let [{:keys [x-res y-res]} option
+  (let [{:keys [width height]} option
         color-info   (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
-        image-info   (ImageInfo. color-info x-res y-res)
+        image-info   (ImageInfo. color-info width height)
         buffer       (mandelbrot/create-byte-buffer option colors)
         byte-buffer  (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
                           (EncoderPNG/encode)

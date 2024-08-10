@@ -14,10 +14,10 @@
 
 (deftest range-tests
   (testing "x-range"
-    (is (= (count (opt/x-range testing-option))
+    (is (= (count (opt/row-constants testing-option))
            1000)))
   (testing "x-range"
-    (is (= (count (opt/y-range testing-option))
+    (is (= (count (opt/column-constants testing-option))
            1000))))
 
 (deftest image-size-test

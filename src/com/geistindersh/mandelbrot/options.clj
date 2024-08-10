@@ -2,48 +2,48 @@
 
 (defrecord
   ^{:added "0.1.1"}
-  Options [x-min x-max x-res y-min y-max y-res limit x-delta y-delta])
+  Options [width-view-min width-view-max width height-view-min height-view-max height limit width-delta height-delta])
 
 (defn make-options
   "A convenience function for creating Options"
   {:added "0.1.1"}
-  ([x-min x-max x-res y-min y-max y-res limit]
-   {:pre [(pos? x-res)
-          (pos? y-res)
-          (<= (* y-res x-res) Integer/MAX_VALUE)]}
-   (let [dx (/ (- x-max x-min)
-               (double (dec x-res)))
-         dy (/ (- y-max y-min)
-               (double (dec y-res)))]
-     (->Options x-min x-max x-res y-min y-max y-res limit dx dy)))
-  ([x-min x-max x-res y-min y-max y-res]
-   (make-options x-min x-max x-res y-min y-max y-res 128))
+  ([width-view-min width-view-max width height-view-min height-view-max height limit]
+   {:pre [(pos? width)
+          (pos? height)
+          (<= (* height width) Integer/MAX_VALUE)]}
+   (let [dx (/ (- width-view-max width-view-min)
+               (double (dec width)))
+         dy (/ (- height-view-max height-view-min)
+               (double (dec height)))]
+     (->Options width-view-min width-view-max width height-view-min height-view-max height limit dx dy)))
+  ([width-view-min width-view-max width height-view-min height-view-max height]
+   (make-options width-view-min width-view-max width height-view-min height-view-max height 128))
   ([]
    (make-options -1.0 1.0 1000 -1.0 1.0 1000)))
 
-(defn x-range
-  "Eagerly generate all values for the x-resolution"
+(defn row-constants
+  "Eagerly generate all values for the rows of the image"
   [option]
-  (let [{:keys [x-delta x-min x-res]} option]
+  (let [{:keys [width-delta width-view-min width]} option]
     (into []
           (comp
-            (map #(* % x-delta))
-            (map #(+ % x-min)))
-          (range x-res))))
+            (map #(* % width-delta))
+            (map #(+ % width-view-min)))
+          (range width))))
 
-(defn y-range
-  "Eagerly generate all values for the y-resolution"
+(defn column-constants
+  "Eagerly generate all values for the columns of the image"
   [option]
-  (let [{:keys [y-delta y-min y-res]} option]
+  (let [{:keys [height-delta height-view-min height]} option]
     (into []
           (comp
-            (map #(* % y-delta))
-            (map #(+ % y-min)))
-          (range y-res))))
+            (map #(* % height-delta))
+            (map #(+ % height-view-min)))
+          (range height))))
 
 (defn image-buffer-size
   "Get the number of bytes in the image"
   [option]
   (* 4
-     (:x-res option)
-     (:y-res option)))
+     (:width option)
+     (:height option)))

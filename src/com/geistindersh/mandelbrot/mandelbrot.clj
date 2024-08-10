@@ -70,8 +70,8 @@
   (let [{:keys [colors default-color]} gradient
         {:keys [limit]} options
         arr (ArrayList. (int (option/image-buffer-size options)))]
-    (doseq [y (option/y-range options)
-            x (option/x-range options)
+    (doseq [y (option/column-constants options)
+            x (option/row-constants options)
             :let [val       (double (mandelbrot-periodicity-checking x y limit))
                   alpha     (double (mod val 1))
                   index     (int (math/floor val))
@@ -84,19 +84,19 @@
     (bytes (byte-array (.toArray arr)))))
 
 (defn- create-mandelbrot-vals-parallel [options]
-  (let [{:keys [x-res y-res limit]} options
-        x-range (option/x-range options)
-        y-range (option/y-range options)
-        buff    (double-array (* x-res y-res))
-        tasks   (into []
-                      (map (fn [i]
-                             (let [y    (nth y-range i)
-                                   base (* i x-res)]
-                               (future
-                                 (doseq [j (range x-res)
-                                         :let [x (nth x-range j)]]
-                                   (aset-double buff (+ base j) (mandelbrot-periodicity-checking x y limit)))))))
-                      (range y-res))]
+  (let [{:keys [width height limit]} options
+        row-vals (option/row-constants options)
+        col-vals (option/column-constants options)
+        buff     (double-array (* width height))
+        tasks    (into []
+                       (map (fn [i]
+                              (let [y    (nth col-vals i)
+                                    base (* i width)]
+                                (future
+                                  (doseq [j (range width)
+                                          :let [x (nth row-vals j)]]
+                                    (aset-double buff (+ base j) (mandelbrot-periodicity-checking x y limit)))))))
+                       (range height))]
     (doseq [task tasks] @task)
     buff))
 
