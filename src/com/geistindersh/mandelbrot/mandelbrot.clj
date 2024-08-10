@@ -7,8 +7,8 @@
     (java.awt Color)
     (java.util ArrayList)))
 
-(def log-2 (math/log 2))
-(def xyn2-limit (double (bit-shift-left 1 16)))
+(def ^:private log-2 (math/log 2))
+(def ^:private xyn2-limit (double (bit-shift-left 1 16)))
 
 (defn mandelbrot-periodicity-checking
   "Calculate the mandelbrot value, based on the given constants"
