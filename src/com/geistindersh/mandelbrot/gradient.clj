@@ -63,3 +63,24 @@
   [^double v0 ^double v1 ^double alpha]
   (unchecked-byte (+ (* v0 (- 1 alpha))
                      (* v1 alpha))))
+
+(def navy-gold-gradient (delay
+                          (vec->Gradient [(Color. (float 0) (float 0) (float 0.2))
+                                          Color/BLUE
+                                          Color/LIGHT_GRAY
+                                          (Color. (float 0.9) (float 0.7) (float 0.4))
+                                          Color/GRAY]
+                                         128)))
+(def lime-forest-gradient (delay
+                            (vec->Gradient [(Color. 0 81 81)
+                                            (Color. 75 183 109)
+                                            Color/GREEN]
+                                           128)))
+(def neon-pink-blue-gradient (delay
+                               (vec->Gradient [(Color. 18 10 143)
+                                               (Color. 218 66 216)
+                                               (Color. 222 22 221)
+                                               (Color. 222 22 221)
+                                               (Color. 240 57 233)
+                                               Color/PINK]
+                                              128)))
