@@ -32,9 +32,7 @@
                               (and (= x-new x-old)
                                    (= y-new y-old)) limit
                               (< period 20) (recur (inc i) x-new y-new x-old y-old (inc period))
-                              :else (recur (inc i) x-new y-new x-new y-new 0)
-                              ))
-
+                              :else (recur (inc i) x-new y-new x-new y-new 0)))
         (< i limit) (let [log-zn (/ (math/log (+ xn2 yn2)) 2)
                           nu     (/ (math/log (/ log-zn log-2))
                                     log-2)]

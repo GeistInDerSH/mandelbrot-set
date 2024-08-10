@@ -1,7 +1,9 @@
 (ns com.geistindersh.mandelbrot.color-map
-  (:require [clojure.math :as math]
-            [com.geistindersh.mandelbrot.utils :as utils])
-  (:import (java.awt Color)))
+  (:require
+    [clojure.math :as math]
+    [com.geistindersh.mandelbrot.utils :as utils])
+  (:import
+    (java.awt Color)))
 
 (defn- coerce-in
   "Coerce the given value between [min-val max-val], or return the value
@@ -32,8 +34,7 @@
                       b (+ (* blue-step i) blue-start)]
                   (Color. (int (coerce-in r 0 255))
                           (int (coerce-in g 0 255))
-                          (int (coerce-in b 0 255))
-                          255)))))))
+                          (int (coerce-in b 0 255)))))))))
 
 (defrecord Gradient [colors default-color])
 
