@@ -3,7 +3,7 @@
     [clojure.test :refer [are deftest is testing]]
     [com.geistindersh.mandelbrot.options :as opt]))
 
-(def testing-option (opt/->Options -1.0 1.0 1000 -1.0 1.0 1000 128 0.002002002002002002 0.002002002002002002))
+(def testing-option (opt/->Options -1.0 1000 -1.0 1000 128 0.002002002002002002 0.002002002002002002))
 
 (deftest make-options-test
   (testing "Create new Options record with make-options"

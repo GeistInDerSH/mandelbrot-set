@@ -2,7 +2,7 @@
 
 (defrecord
   ^{:added "0.1.1"}
-  Options [width-view-min width-view-max width height-view-min height-view-max height limit width-delta height-delta])
+  Options [width-view-min width height-view-min height limit width-delta height-delta])
 
 (defn make-options
   "A convenience function for creating Options"
@@ -15,7 +15,7 @@
                (double (dec width)))
          dy (/ (- height-view-max height-view-min)
                (double (dec height)))]
-     (->Options width-view-min width-view-max width height-view-min height-view-max height limit dx dy)))
+     (->Options width-view-min width height-view-min height limit dx dy)))
   ([width-view-min width-view-max width height-view-min height-view-max height]
    (make-options width-view-min width-view-max width height-view-min height-view-max height 128))
   ([]
