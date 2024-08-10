@@ -28,7 +28,10 @@ jobs:
           clj-kondo: 2024.08.01 # Clj-kondo
 
       - name: Run Unit tests
-        run: clojure -X:test/unit
+        run: clojure -M:test/unit
+
+      - name: Run Integration tests
+        run: clojure -M:test/integration
 
       - name: "Lint with clj-kondo"
         run: clj-kondo --lint deps.edn src resources test
