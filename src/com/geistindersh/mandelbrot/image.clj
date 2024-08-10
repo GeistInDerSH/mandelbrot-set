@@ -14,7 +14,7 @@
   (let [{:keys [x-res y-res]} option
         color-info   (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
         image-info   (ImageInfo. color-info x-res y-res)
-        buffer       (bytes (mandelbrot/create-byte-buffer option colors))
+        buffer       (mandelbrot/create-byte-buffer option colors)
         byte-buffer  (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
                           (EncoderPNG/encode)
                           (.toByteBuffer))
