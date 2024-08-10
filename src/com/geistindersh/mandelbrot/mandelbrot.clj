@@ -40,29 +40,6 @@
                                  nu)))
         :else (double i)))))
 
-(defn mandelbrot
-  "Calculate the mandelbrot value, based on the given constants"
-  {:added "0.1.1"}
-  ^"java.lang.Double" [^double cx ^double cy ^long limit]
-  (loop [i  (long 0)
-         xn (double 0.0)
-         yn (double 0.0)]
-    (let [xn2 (double (* xn xn))
-          yn2 (double (* yn yn))]
-      (cond
-        (and (< (+ xn2 yn2) xyn2-limit)
-             (< i limit)) (recur (inc i)
-                                 (+ (- xn2 yn2)
-                                    cx)
-                                 (+ (* (+ xn xn) yn)
-                                    cy))
-        (< i limit) (let [log-zn (/ (math/log (+ xn2 yn2)) 2)
-                          nu     (/ (math/log (/ log-zn log-2))
-                                    log-2)]
-                      (double (- (inc i)
-                                 nu)))
-        :else (double i)))))
-
 (defn- create-byte-buffer-serial
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
