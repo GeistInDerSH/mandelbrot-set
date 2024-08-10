@@ -1,5 +1,7 @@
 # Mandelbrot Set
 
+[![Test and Package project](https://github.com/GeistInDerSH/mandelbrot-set/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/GeistInDerSH/mandelbrot-set/actions/workflows/ci.yaml)
+
 Exploring generating image of the
 [Mandelbrot Set](https://en.wikipedia.org/wiki/Mandelbrot_set)
 in Clojure.
