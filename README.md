@@ -6,9 +6,9 @@ in Clojure.
 
 ## Example Images
 
-!["Pink and Purple"](example/png/ppr.png)
-![Yellow Magenta](example/png/ym.png)
-![Red Blue Green Grey](example/png/rbg_gr_old.png)
+![Lime Green to Forest](example/png/lime_forest.png)
+![Navy to Gold](example/png/navy_gold.png)
+![Neon Pink to Ultramarine](example/png/neon_pink_ultramarine.png)
 
 ## TODO
 
