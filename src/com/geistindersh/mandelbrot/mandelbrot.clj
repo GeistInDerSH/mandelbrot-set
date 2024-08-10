@@ -2,7 +2,7 @@
   (:require
     [clojure.math :as math]
     [com.geistindersh.mandelbrot.gradient :as gradient]
-    [com.geistindersh.mandelbrot.options :as option])
+    [com.geistindersh.mandelbrot.options :as opt])
   (:import
     (java.awt Color)
     (java.util ArrayList)))
@@ -69,9 +69,9 @@
   [options gradient]
   (let [{:keys [colors default-color]} gradient
         {:keys [limit]} options
-        arr (ArrayList. (int (option/image-buffer-size options)))]
-    (doseq [y (option/column-constants options)
-            x (option/row-constants options)
+        arr (ArrayList. (int (opt/image-buffer-size options)))]
+    (doseq [y (opt/column-constants options)
+            x (opt/row-constants options)
             :let [val       (double (mandelbrot-periodicity-checking x y limit))
                   alpha     (double (mod val 1))
                   index     (int (math/floor val))
@@ -85,8 +85,8 @@
 
 (defn- create-mandelbrot-vals-parallel [options]
   (let [{:keys [width height limit]} options
-        row-vals (option/row-constants options)
-        col-vals (option/column-constants options)
+        row-vals (opt/row-constants options)
+        col-vals (opt/column-constants options)
         buff     (double-array (* width height))
         tasks    (into []
                        (map (fn [i]
@@ -106,7 +106,7 @@
   [options gradient]
   (let [{:keys [colors default-color]} gradient
         vals (create-mandelbrot-vals-parallel options)
-        arr  (ArrayList. (int (option/image-buffer-size options)))]
+        arr  (ArrayList. (int (opt/image-buffer-size options)))]
     (doseq [val vals
             :let [alpha     (double (mod val 1))
                   index     (int (math/floor val))

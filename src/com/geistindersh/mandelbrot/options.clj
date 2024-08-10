@@ -23,8 +23,8 @@
 
 (defn row-constants
   "Eagerly generate all values for the rows of the image"
-  [option]
-  (let [{:keys [width-delta width-view-min width]} option]
+  [options]
+  (let [{:keys [width-delta width-view-min width]} options]
     (into []
           (comp
             (map #(* % width-delta))
@@ -33,8 +33,8 @@
 
 (defn column-constants
   "Eagerly generate all values for the columns of the image"
-  [option]
-  (let [{:keys [height-delta height-view-min height]} option]
+  [options]
+  (let [{:keys [height-delta height-view-min height]} options]
     (into []
           (comp
             (map #(* % height-delta))
@@ -43,7 +43,7 @@
 
 (defn image-buffer-size
   "Get the number of bytes in the image"
-  [option]
+  [options]
   (* 4
-     (:width option)
-     (:height option)))
+     (:width options)
+     (:height options)))

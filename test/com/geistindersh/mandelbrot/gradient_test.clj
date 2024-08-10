@@ -1,7 +1,9 @@
 (ns com.geistindersh.mandelbrot.gradient-test
-  (:require [clojure.test :refer [are deftest testing]]
-            [com.geistindersh.mandelbrot.gradient :refer [vec->Gradient]])
-  (:import (java.awt Color)))
+  (:require
+    [clojure.test :refer [are deftest testing]]
+    [com.geistindersh.mandelbrot.gradient :refer [vec->Gradient]])
+  (:import
+    (java.awt Color)))
 
 (deftest vec->Gradient-test
   (testing "The number of colors in the gradient are what we expect"

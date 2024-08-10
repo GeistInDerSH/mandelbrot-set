@@ -8,7 +8,7 @@
     (java.awt Color)
     (java.util Arrays)))
 
-(def ^:private testing-option (options/make-options))
+(def ^:private testing-options (options/make-options))
 (def ^:private testing-gradient (gradient/vec->Gradient [Color/RED Color/BLUE]))
 
 (deftest mandelbrot-test
@@ -25,11 +25,11 @@
 
 (deftest mandelbrot-create-byte-buffer-test
   (testing "Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient true)
-                       ^bytes (create-byte-buffer testing-option testing-gradient true))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient true)
+                       ^bytes (create-byte-buffer testing-options testing-gradient true))))
   (testing "Serial buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient false)
-                       ^bytes (create-byte-buffer testing-option testing-gradient false))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options testing-gradient false))))
   (testing "Serial and Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-option testing-gradient false)
-                       ^bytes (create-byte-buffer testing-option testing-gradient true)))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options testing-gradient true)))))
