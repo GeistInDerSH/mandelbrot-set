@@ -1,7 +1,7 @@
 (ns com.geistindersh.mandelbrot.mandelbrot-test
   (:require
     [clojure.test :refer [are deftest is testing]]
-    [com.geistindersh.mandelbrot.color-map :as colors]
+    [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.mandelbrot :refer [create-byte-buffer mandelbrot-periodicity-checking]]
     [com.geistindersh.mandelbrot.options :as options])
   (:import
@@ -9,7 +9,7 @@
     (java.util Arrays)))
 
 (def ^:private testing-option (options/make-options))
-(def ^:private testing-gradient (colors/vec->Gradient [Color/RED Color/BLUE]))
+(def ^:private testing-gradient (gradient/vec->Gradient [Color/RED Color/BLUE]))
 
 (deftest mandelbrot-test
   (testing "Test that the function for generating the mandelbrot value is correct"

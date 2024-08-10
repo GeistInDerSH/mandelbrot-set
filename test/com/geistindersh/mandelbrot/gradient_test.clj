@@ -1,6 +1,6 @@
-(ns com.geistindersh.mandelbrot.color-map-test
+(ns com.geistindersh.mandelbrot.gradient-test
   (:require [clojure.test :refer [are deftest testing]]
-            [com.geistindersh.mandelbrot.color-map :refer [vec->Gradient]])
+            [com.geistindersh.mandelbrot.gradient :refer [vec->Gradient]])
   (:import (java.awt Color)))
 
 (deftest vec->Gradient-test

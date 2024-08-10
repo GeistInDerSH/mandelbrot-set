@@ -1,7 +1,7 @@
 (ns com.geistindersh.mandelbrot.core
   (:gen-class)
   (:require
-    [com.geistindersh.mandelbrot.color-map :as colors]
+    [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.image :as image]
     [com.geistindersh.mandelbrot.options :as opt])
   (:import
@@ -14,6 +14,6 @@
                 Color/LIGHT_GRAY
                 (Color. (float 0.9) (float 0.7) (float 0.4))
                 Color/GRAY]
-        color  (colors/vec->Gradient cv 128)]
+        color  (gradient/vec->Gradient cv 128)]
     (time (image/create-mandelbrot-png "example/png/smooth.png" option color))
     (shutdown-agents)))

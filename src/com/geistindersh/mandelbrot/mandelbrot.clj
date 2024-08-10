@@ -1,7 +1,7 @@
 (ns com.geistindersh.mandelbrot.mandelbrot
   (:require
     [clojure.math :as math]
-    [com.geistindersh.mandelbrot.color-map :as colors]
+    [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.options :as option])
   (:import
     (java.awt Color)
@@ -77,9 +77,9 @@
                   index     (int (math/floor val))
                   ^Color c0 (nth colors index default-color)
                   ^Color c1 (nth colors (inc index) default-color)]]
-      (.add arr (colors/linear-interpolation (.getRed c0) (.getRed c1) alpha))
-      (.add arr (colors/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
-      (.add arr (colors/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
       (.add arr -1))
     (bytes (byte-array (.toArray arr)))))
 
@@ -112,9 +112,9 @@
                   index     (int (math/floor val))
                   ^Color c0 (nth colors index default-color)
                   ^Color c1 (nth colors (inc index) default-color)]]
-      (.add arr (colors/linear-interpolation (.getRed c0) (.getRed c1) alpha))
-      (.add arr (colors/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
-      (.add arr (colors/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
+      (.add arr (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
       (.add arr -1))
     (bytes (byte-array (.toArray arr)))))
 

@@ -1,4 +1,4 @@
-(ns com.geistindersh.mandelbrot.color-map
+(ns com.geistindersh.mandelbrot.gradient
   (:require
     [clojure.math :as math]
     [com.geistindersh.mandelbrot.utils :as utils])
