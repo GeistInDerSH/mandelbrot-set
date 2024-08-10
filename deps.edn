@@ -9,11 +9,13 @@
                        :ns-default build}
            :lint      {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2024.03.13"}}
                        :main-opts  ["-m" "clj-kondo.main" "--lint" "src" "test" "--parallel"]}
-           :test      {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
-                       :main-opts  ["-m" "kaocha.runner"]
-                       :exec-fn    kaocha.runner/exec-fn
+           :test      {:extra-deps  {lambdaisland/kaocha           {:mvn/version "1.91.1392"}
+                                     lambdaisland/kaocha-cloverage {:mvn/version "1.1.89"}}
+                       :main-opts   ["-m" "kaocha.runner"]
+                       :exec-fn     kaocha.runner/exec-fn
                        :extra-paths ["test"]}
-           :test/unit {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
-                       :main-opts  ["-m" "kaocha.runner" ":unit"]
-                       :exec-fn    kaocha.runner/exec-fn
+           :test/unit {:extra-deps  {lambdaisland/kaocha           {:mvn/version "1.91.1392"}
+                                     lambdaisland/kaocha-cloverage {:mvn/version "1.1.89"}}
+                       :main-opts   ["-m" "kaocha.runner" ":unit"]
+                       :exec-fn     kaocha.runner/exec-fn
                        :extra-paths ["test"]}}}

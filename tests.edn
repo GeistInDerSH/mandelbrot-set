@@ -12,5 +12,6 @@
           :benchmark {:kaocha/plugins [:kaocha.plugin/profiling]
                       :kaocha.plugin.profiling/profiling? true
                       :fail-fast? true}
-          :default {:color? true
+          :coverage {:kaocha/plugins [:kaocha.plugin/cloverage]}
+          :default {:color?     true
                     :fail-fast? true}}]

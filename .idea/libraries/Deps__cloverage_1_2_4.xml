@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Deps: cloverage:1.2.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cloverage/cloverage/1.2.4/cloverage-1.2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
