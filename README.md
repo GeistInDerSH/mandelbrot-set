@@ -12,8 +12,6 @@ in Clojure.
 
 ## TODO
 
-* Non-Square Image Generation
-    * Non-square images generate a "noisy" image that doesn't look like anything
 * GIF Generation
     * Multiple images that loop, zooming into the original image
     * Likely will require additional optimization in image generation
