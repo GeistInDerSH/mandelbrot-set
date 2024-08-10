@@ -76,11 +76,11 @@
                                             (Color. 75 183 109)
                                             Color/GREEN]
                                            128)))
-(def neon-pink-blue-gradient (delay
-                               (vec->Gradient [(Color. 18 10 143)
-                                               (Color. 218 66 216)
-                                               (Color. 222 22 221)
-                                               (Color. 222 22 221)
-                                               (Color. 240 57 233)
-                                               Color/PINK]
-                                              128)))
+(def neon-pink-ultramarine-gradient (delay
+                                      (vec->Gradient [(Color. 18 10 143)
+                                                      (Color. 218 66 216)
+                                                      (Color. 222 22 221)
+                                                      (Color. 222 22 221)
+                                                      (Color. 240 57 233)
+                                                      Color/PINK]
+                                                     128)))
