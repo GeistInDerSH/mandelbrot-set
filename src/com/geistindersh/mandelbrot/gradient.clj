@@ -40,6 +40,8 @@
 (defrecord Gradient [colors default-color])
 
 (defn vec->Gradient
+  "Convert a vector into a Gradient, generating any of the colors
+   in between to the given limit"
   ([v] (vec->Gradient v 256))
   ([v size] (vec->Gradient v size Color/BLACK))
   ([v size default]

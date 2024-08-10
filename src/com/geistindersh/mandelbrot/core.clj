@@ -8,7 +8,7 @@
     (java.awt Color)))
 
 (defn -main [& _]
-  (let [options (opt/make-options -1.0 0.0 5000 0.0 1.0 5000)
+  (let [options (opt/make-options -1.0 0.0 21000 0.0 1.0 21000)
         cv      [(Color. (float 0) (float 0) (float 0.2))
                  Color/BLUE
                  Color/LIGHT_GRAY

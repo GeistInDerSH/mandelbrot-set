@@ -83,7 +83,10 @@
       (.add arr -1))
     (bytes (byte-array (.toArray arr)))))
 
-(defn- create-mandelbrot-vals-parallel [options]
+(defn- create-mandelbrot-vals-parallel
+  "Generate the initial mandelbrot values in a double-array.
+   This is done in parallel using futures that are awaited before returning."
+  [options]
   (let [{:keys [width height limit]} options
         row-vals (opt/row-constants options)
         col-vals (opt/column-constants options)
@@ -119,6 +122,8 @@
     (bytes (byte-array (.toArray arr)))))
 
 (defn create-byte-buffer
+  "Generate an image byte buffer of 8-bit RGB values.
+   This can optionally run in parallel to speed up the generation (default)."
   ([options gradient] (create-byte-buffer options gradient true))
   ([options gradient parallel?]
    (if parallel?
