@@ -1,6 +1,4 @@
 (ns com.geistindersh.mandelbrot.utils
-  (:require
-    [clj-async-profiler.core :as prof])
   (:import
     (java.util ArrayDeque)))
 
@@ -22,8 +20,3 @@
               (rf result v))
             result)))))))
 
-(defmacro with-profiling [& body]
-  `(do
-     (prof/start {:event :cpu})
-     ~@body
-     (println (.toString (prof/stop {:generate-flamegraph? true})))))

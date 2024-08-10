@@ -72,8 +72,8 @@
   (let [{:keys [colors default-color]} gradient
         {:keys [limit]} options
         arr (ArrayList. (int (option/image-buffer-size options)))]
-    (doseq [x (option/x-range options)
-            y (option/y-range options)
+    (doseq [y (option/y-range options)
+            x (option/x-range options)
             :let [val       (double (mandelbrot-periodicity-checking x y limit))
                   alpha     (double (mod val 1))
                   index     (int (math/floor val))
@@ -92,13 +92,13 @@
         buff    (double-array (* x-res y-res))
         tasks   (into []
                       (map (fn [i]
-                             (let [x    (nth x-range i)
-                                   base (* i y-res)]
+                             (let [y    (nth y-range i)
+                                   base (* i x-res)]
                                (future
-                                 (doseq [j (range y-res)
-                                         :let [y (nth y-range j)]]
+                                 (doseq [j (range x-res)
+                                         :let [x (nth x-range j)]]
                                    (aset-double buff (+ base j) (mandelbrot-periodicity-checking x y limit)))))))
-                      (range x-res))]
+                      (range y-res))]
     (doseq [task tasks] @task)
     buff))
 
