@@ -46,7 +46,7 @@
    ["-d" "--default-color COLOR" "The hex code of the default color to use, inside the mandelbrot set"
     :default Color/BLACK
     :parse-fn #(Color. (Integer/parseInt %))]
-   ["-p" "--preset-gradient NAME" "The preset gradient to use"
+   ["-p" "--preset-gradient NAME" "The preset gradient to use. Options: navy-gold, pink-ultramarine, lime-forest"
     :default nil
     :parse-fn #(case %
                  "navy-gold" @gradient/navy-gold-gradient
