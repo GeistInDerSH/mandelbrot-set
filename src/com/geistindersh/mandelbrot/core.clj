@@ -54,20 +54,32 @@
                  nil)]
    ["-h" "--help"]])
 
-(defn validate-opts [args]
-  (let [{:keys                     []
-         {:keys [height height-view-min height-view-max
-                 width width-view-min width-view-max
-                 limit output-file
-                 default-color color
-                 preset-gradient]} :options} (cli/parse-opts args cli-options)
-        option (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
-        grad   (if (some? preset-gradient)
-                 preset-gradient
-                 (gradient/vec->Gradient color limit default-color))]
-    {:option    option
-     :grad      grad
-     :file-name output-file}))
+(defn- usage [summary-options]
+  (->> ["A program for generating mandelbrot set images"
+        ""
+        "Usage: mandelbrot [options]"
+        ""
+        "Options:"
+        summary-options]
+       (str/join \newline)))
+
+(defn- validate-opts [args]
+  (let [{:keys [options summary]} (cli/parse-opts args cli-options)]
+    (when (:help options)
+      (println (usage summary))
+      (System/exit 0))
+    (let [{:keys [height height-view-min height-view-max
+                  width width-view-min width-view-max
+                  limit output-file
+                  default-color color
+                  preset-gradient]} options
+          option (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
+          grad   (if (some? preset-gradient)
+                   preset-gradient
+                   (gradient/vec->Gradient color limit default-color))]
+      {:option    option
+       :grad      grad
+       :file-name output-file})))
 
 (defn -main [& args]
   (let [{:keys [option grad file-name]} (validate-opts args)]
