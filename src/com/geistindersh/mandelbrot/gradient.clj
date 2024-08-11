@@ -1,6 +1,7 @@
 (ns com.geistindersh.mandelbrot.gradient
   (:require
     [clojure.math :as math]
+    [clojure.string :as str]
     [com.geistindersh.mandelbrot.utils :as utils])
   (:import
     (java.awt Color)))
@@ -62,6 +63,24 @@
   (unchecked-byte (+ (* v0 (- 1 alpha))
                      (* v1 alpha))))
 
+(defn str->Color
+  "Try to convert the given string to a Color"
+  [s]
+  (let [s (str/lower-case s)]
+    (case s
+      "black" Color/BLACK
+      "blue" Color/BLUE
+      "cyan" Color/CYAN
+      "gray" Color/GRAY
+      "green" Color/GREEN
+      "grey" Color/GRAY
+      "magenta" Color/MAGENTA
+      "pink" Color/PINK
+      "red" Color/RED
+      "yellow" Color/YELLOW
+      (Color. (Integer/parseInt (str/replace s #"^0x" "")
+                                16)))))
+
 (def navy-gold-gradient (delay
                           (vec->Gradient [(Color. (float 0) (float 0) (float 0.2))
                                           Color/BLUE
@@ -80,3 +99,7 @@
                                                       (Color. 222 22 221)
                                                       Color/PINK]
                                                      128)))
+(def presets
+  {"navy-gold"        navy-gold-gradient
+   "pink-ultramarine" neon-pink-ultramarine-gradient
+   "lime-forest"      lime-forest-gradient})

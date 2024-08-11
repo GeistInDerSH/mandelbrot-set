@@ -4,6 +4,8 @@
     [com.geistindersh.mandelbrot.gradient :refer [lime-forest-gradient
                                                   navy-gold-gradient
                                                   neon-pink-ultramarine-gradient
+                                                  presets
+                                                  str->Color
                                                   vec->Gradient]])
   (:import
     (java.awt Color)))
@@ -40,4 +42,27 @@
     (are [a b] (= a (:default-color b))
                Color/BLACK @navy-gold-gradient
                Color/BLACK @lime-forest-gradient
-               Color/BLACK @neon-pink-ultramarine-gradient)))
+               Color/BLACK @neon-pink-ultramarine-gradient))
+  (testing "Preset map is configured"
+    (are [a b] (= (get presets a) b)
+               "lime-forest" lime-forest-gradient
+               "pink-ultramarine" neon-pink-ultramarine-gradient
+               "navy-gold" navy-gold-gradient
+               "invalid" nil)))
+
+(deftest str->Color-test
+  (testing "Convert a string to a Color"
+    (are [a b] (= (str->Color a) b)
+               "black" Color/BLACK
+               "blue" Color/BLUE
+               "cyan" Color/CYAN
+               "gray" Color/GRAY
+               "green" Color/GREEN
+               "grey" Color/GRAY
+               "magenta" Color/MAGENTA
+               "pink" Color/PINK
+               "red" Color/RED
+               "yellow" Color/YELLOW
+               "fef65b" (Color. 254 246 91)
+               "0x4974a5" (Color. 73 116 165)
+               "0X6E57D2" (Color. 110 87 210))))

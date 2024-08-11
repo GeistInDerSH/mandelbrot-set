@@ -40,19 +40,16 @@
    ["-c" "--color COLOR" "A hex color to use in the image. Can be given multiple times to add additional colors"
     :multi true
     :default []
-    :parse-fn #(Color. (Integer/parseInt (str/replace % #"^0x[xX]" "")
-                                         16))
+    :parse-fn #(gradient/str->Color %)
     :update-fn conj]
    ["-d" "--default-color COLOR" "The hex code of the default color to use, inside the mandelbrot set"
     :default Color/BLACK
-    :parse-fn #(Color. (Integer/parseInt %))]
-   ["-p" "--preset-gradient NAME" "The preset gradient to use. Options: navy-gold, pink-ultramarine, lime-forest"
+    :parse-fn #(gradient/str->Color %)]
+   ["-p" "--preset-gradient NAME"
+    :desc (str "The preset gradient to use. Options: "
+               (str/join ", " (keys gradient/presets)))
     :default nil
-    :parse-fn #(case %
-                 "navy-gold" @gradient/navy-gold-gradient
-                 "pink-ultramarine" @gradient/neon-pink-ultramarine-gradient
-                 "lime-forest" @gradient/lime-forest-gradient
-                 nil)]
+    :parse-fn #(get gradient/presets %)]
    [nil "--[no-]parallel" "Run the image generation in parallel"
     :default true]
    ["-h" "--help"]])
@@ -78,7 +75,7 @@
                   preset-gradient parallel]} options
           option (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
           grad   (if (some? preset-gradient)
-                   preset-gradient
+                   @preset-gradient
                    (gradient/vec->Gradient color limit default-color))]
       {:option    option
        :grad      grad
