@@ -33,6 +33,16 @@ jobs:
           cli: 1.11.1.1165    # Clojure CLI based on tools.deps
           clj-kondo: 2024.08.01 # Clj-kondo
 
+      - name: Cache clojure dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+            ~/.deps.clj
+          key: cljdeps-${{ hashFiles('deps.edn') }}
+          restore-keys: cljdeps-
+
       - name: Run Unit tests
         run: clojure -M:test/unit
 
