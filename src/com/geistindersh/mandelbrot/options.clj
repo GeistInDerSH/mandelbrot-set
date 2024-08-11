@@ -10,7 +10,9 @@
   ([width-view-min width-view-max width height-view-min height-view-max height limit]
    {:pre [(pos? width)
           (pos? height)
-          (<= (* height width) Integer/MAX_VALUE)]}
+          (<= (* height width) Integer/MAX_VALUE)
+          (< width-view-min width-view-max)
+          (< height-view-min height-view-max)]}
    (let [dx (/ (- width-view-max width-view-min)
                (double (dec width)))
          dy (/ (- height-view-max height-view-min)

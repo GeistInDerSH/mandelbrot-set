@@ -1,10 +1,11 @@
 {:paths   ["src" "resources"]
- :deps    {org.clojure/clojure {:mvn/version "1.11.3"}
+ :deps    {com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.2.2"}
            io.github.humbleui/skija-linux-x64 {:mvn/version "0.116.2"}
            io.github.humbleui/skija-macos-x64 {:mvn/version "0.116.2"}
-           io.github.humbleui/skija-windows-x64 {:mvn/version "0.116.2"}
            io.github.humbleui/skija-shared {:mvn/version "0.116.2"}
-           com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.2.2"}}
+           io.github.humbleui/skija-windows-x64     {:mvn/version "0.116.2"}
+           org.clojure/clojure                      {:mvn/version "1.11.3"}
+           org.clojure/tools.cli                    {:mvn/version "1.1.230"}}
  :aliases {:build     {:extra-deps {io.github.clojure/tools.build {:mvn/version "0.10.3"}}
                        :ns-default build}
            :lint      {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2024.03.13"}}

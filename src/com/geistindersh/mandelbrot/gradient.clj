@@ -42,6 +42,7 @@
   ([v] (vec->Gradient v 256))
   ([v size] (vec->Gradient v size Color/BLACK))
   ([v size default]
+   {:pre [(> (count v) 0)]}
    (let [steps  (->> v count dec (min size) (/ size) (math/ceil))
          colors (into []
                       (comp
