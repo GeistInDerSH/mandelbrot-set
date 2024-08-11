@@ -40,7 +40,8 @@
    ["-c" "--color COLOR" "A hex color to use in the image. Can be given multiple times to add additional colors"
     :multi true
     :default []
-    :parse-fn #(Color. (Integer/parseInt % 16))
+    :parse-fn #(Color. (Integer/parseInt (str/replace % #"^0x[xX]" "")
+                                         16))
     :update-fn conj]
    ["-d" "--default-color COLOR" "The hex code of the default color to use, inside the mandelbrot set"
     :default Color/BLACK
