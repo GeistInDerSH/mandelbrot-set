@@ -53,6 +53,8 @@
                  "pink-ultramarine" @gradient/neon-pink-ultramarine-gradient
                  "lime-forest" @gradient/lime-forest-gradient
                  nil)]
+   [nil "--[no-]parallel" "Run the image generation in parallel"
+    :default true]
    ["-h" "--help"]])
 
 (defn- usage [summary-options]
@@ -73,17 +75,18 @@
                   width width-view-min width-view-max
                   limit output-file
                   default-color color
-                  preset-gradient]} options
+                  preset-gradient parallel]} options
           option (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
           grad   (if (some? preset-gradient)
                    preset-gradient
                    (gradient/vec->Gradient color limit default-color))]
       {:option    option
        :grad      grad
-       :file-name output-file})))
+       :file-name output-file
+       :parallel? parallel})))
 
 (defn -main [& args]
-  (let [{:keys [option grad file-name]} (validate-opts args)]
+  (let [{:keys [option grad file-name parallel?]} (validate-opts args)]
     (time
-      (image/create-mandelbrot-png file-name option grad))
+      (image/create-mandelbrot-png file-name option grad parallel?))
     (shutdown-agents)))
