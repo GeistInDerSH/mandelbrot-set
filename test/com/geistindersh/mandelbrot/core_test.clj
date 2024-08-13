@@ -34,6 +34,12 @@
     (let [flags ["-p" "lime-forest"]
           {:keys [grad]} (validate-opts flags)]
       (is (= grad @gradient/lime-forest-gradient))))
+  (testing "Image type"
+    (are [a b] (= a (get (validate-opts b) :image-type))
+               :png ["-p" "navy-gold" "--image-type" "png"]
+               :jpeg ["-p" "navy-gold" "-t" "jpg"]
+               :jpeg ["-p" "navy-gold" "-t" "jpeg"]
+               :webp ["-p" "navy-gold" "-t" "webp"]))
   (testing "With Colors Flags"
     (let [flags ["-c" "red" "--color" "BLUE" "-c" "00ff00" "-d" "pink"]
           {:keys [grad]} (validate-opts flags)]
