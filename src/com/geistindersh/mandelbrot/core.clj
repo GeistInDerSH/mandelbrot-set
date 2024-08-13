@@ -72,13 +72,16 @@
                   width width-view-min width-view-max
                   limit output-file
                   default-color color
-                  preset-gradient parallel]} options
-          option (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
-          grad   (if (some? preset-gradient)
-                   @preset-gradient
-                   (gradient/vec->Gradient color limit default-color))]
-      {:option    option
-       :grad      grad
+                  preset-gradient parallel]} options]
+      (when (and (empty? color)
+                 (nil? preset-gradient))
+        (println "No color or preset was provided. Provide colors with --color, or a preset with --preset-gradient")
+        (println "See --help for more options")
+        (System/exit -1))
+      {:option    (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
+       :grad      (if (some? preset-gradient)
+                    @preset-gradient
+                    (gradient/vec->Gradient color limit default-color))
        :file-name output-file
        :parallel? parallel})))
 
