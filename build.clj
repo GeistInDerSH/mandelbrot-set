@@ -7,10 +7,10 @@
 
 (def latest-revision (delay (build/git-process {:git-args "rev-parse --short HEAD"})))
 (defn- get-patch-version []
-  (let [last-version-bump-commit "8be12063"                 ;; Count the commits since the version bump as the patches
+  (let [last-version-bump-commit "f0559f6b"                 ;; Count the commits since the version bump as the patches
         git-arg                  (format "rev-list %s...%s --count" last-version-bump-commit @latest-revision)
         patches-since-bump       (build/git-process {:git-args git-arg})]
-    (format "0.4.%s" patches-since-bump)))
+    (format "1.0.%s" patches-since-bump)))
 
 (def class-dir "target/classes")
 (def uber-file "target/mandelbrot.jar")
