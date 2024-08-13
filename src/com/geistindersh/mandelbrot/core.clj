@@ -22,16 +22,16 @@
     :default "output.png"
     :validate [#(not (str/blank? %)) "The name of the file must be given"]]
    ["-x" "--width-view-min MIN" "The lower bound of the width view"
-    :default -1.0
+    :default -2.0
     :parse-fn #(Double/parseDouble %)]
    ["-X" "--width-view-max MAX" "The upper bound of the width view"
-    :default 0.0
+    :default 0.5
     :parse-fn #(Double/parseDouble %)]
    ["-y" "--height-view-min MIN" "The lower bound of the height view"
-    :default 0.0
+    :default -1.25
     :parse-fn #(Double/parseDouble %)]
    ["-Y" "--height-view-max MAX" "The upper bound of the height view"
-    :default 1.0
+    :default 1.25
     :parse-fn #(Double/parseDouble %)]
    ["-l" "--limit LIMIT" "The upper bound of the mandelbrot set"
     :default 128
