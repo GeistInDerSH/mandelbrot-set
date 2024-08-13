@@ -63,12 +63,12 @@
         summary-options]
        (str/join \newline)))
 
-(def ^:private no-color-or-preset
+(def no-color-or-preset
   (str "No color or preset was provided. "
        "Provide colors with --color, or a preset with --preset-gradient"
        "\nSee --help for more options"))
 
-(defn- validate-opts [args]
+(defn validate-opts [args]
   (let [{:keys          [summary]
          {:keys [height height-view-min height-view-max
                  width width-view-min width-view-max
