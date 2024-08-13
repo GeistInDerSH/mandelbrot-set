@@ -63,30 +63,35 @@
         summary-options]
        (str/join \newline)))
 
+(def ^:private no-color-or-preset
+  (str "No color or preset was provided. "
+       "Provide colors with --color, or a preset with --preset-gradient"
+       "\nSee --help for more options"))
+
 (defn- validate-opts [args]
-  (let [{:keys [options summary]} (cli/parse-opts args cli-options)]
-    (when (:help options)
-      (println (usage summary))
-      (System/exit 0))
-    (let [{:keys [height height-view-min height-view-max
-                  width width-view-min width-view-max
-                  limit output-file
-                  default-color color
-                  preset-gradient parallel]} options]
-      (when (and (empty? color)
-                 (nil? preset-gradient))
-        (println "No color or preset was provided. Provide colors with --color, or a preset with --preset-gradient")
-        (println "See --help for more options")
-        (System/exit -1))
-      {:option    (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
-       :grad      (if (some? preset-gradient)
-                    @preset-gradient
-                    (gradient/vec->Gradient color limit default-color))
-       :file-name output-file
-       :parallel? parallel})))
+  (let [{:keys          [summary]
+         {:keys [height height-view-min height-view-max
+                 width width-view-min width-view-max
+                 limit output-file
+                 default-color color
+                 preset-gradient parallel
+                 help]} :options} (cli/parse-opts args cli-options)]
+    (cond
+      (some? help) {:exit-code 0 :exit-text (usage summary)}
+      (and (empty? color)
+           (nil? preset-gradient)) {:exit-code -1 :exit-text no-color-or-preset}
+      :else {:option    (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
+             :grad      (if (some? preset-gradient)
+                          @preset-gradient
+                          (gradient/vec->Gradient color limit default-color))
+             :file-name output-file
+             :parallel? parallel})))
 
 (defn -main [& args]
-  (let [{:keys [option grad file-name parallel?]} (validate-opts args)]
+  (let [{:keys [option grad file-name parallel? exit-code exit-text]} (validate-opts args)]
+    (when (and exit-code exit-text)
+      (println exit-text)
+      (System/exit exit-code))
     (time
       (image/create-mandelbrot-png file-name option grad parallel?))
     (shutdown-agents)))
