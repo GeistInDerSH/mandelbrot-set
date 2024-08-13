@@ -34,6 +34,21 @@
     (let [flags ["-p" "lime-forest"]
           {:keys [grad]} (validate-opts flags)]
       (is (= grad @gradient/lime-forest-gradient))))
+  (testing "Image type"
+    (are [a b] (= a (get (validate-opts b) :image-type))
+               :png ["-p" "navy-gold" "--image-type" "png"]
+               :png ["-p" "navy-gold" "-o" "test.png"]
+               :jpeg ["-p" "navy-gold" "-t" "jpg"]
+               :jpeg ["-p" "navy-gold" "-o" "test.jpg"]
+               :jpeg ["-p" "navy-gold" "-t" "jpeg"]
+               :jpeg ["-p" "navy-gold" "-o" "test.jpeg"]
+               :webp ["-p" "navy-gold" "-t" "webp"]
+               :webp ["-p" "navy-gold" "-o" "test.webp"])
+    (let [flags ["-p" "navy-gold" "-o" "output.gif"]
+          {:keys [exit-code exit-text]} (validate-opts flags)]
+      (are [a b] (= a b)
+                 -1 exit-code
+                 "Unknown or unsupported image extension for output.gif" exit-text)))
   (testing "With Colors Flags"
     (let [flags ["-c" "red" "--color" "BLUE" "-c" "00ff00" "-d" "pink"]
           {:keys [grad]} (validate-opts flags)]

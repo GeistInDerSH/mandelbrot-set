@@ -50,6 +50,14 @@
                (str/join ", " (keys gradient/presets)))
     :default nil
     :parse-fn #(get gradient/presets %)]
+   ["-t" "--image-type IMAGE_TYPE"
+    :desc (str "The type of image to generate. Options: "
+               (str/join ", " (map name image/valid-encoders)))
+    :default-fn (fn [obj]
+                  (let [file-name (get obj :output-file)
+                        ext       (peek (str/split file-name #"\."))]
+                    (image/str->image-encoder ext)))
+    :parse-fn #(image/str->image-encoder %)]
    [nil "--[no-]parallel" "Run the image generation in parallel"
     :default true]
    ["-h" "--help"]])
@@ -69,29 +77,31 @@
        "\nSee --help for more options"))
 
 (defn validate-opts [args]
-  (let [{:keys          [summary]
+  (let [{:keys                     [summary]
          {:keys [height height-view-min height-view-max
                  width width-view-min width-view-max
                  limit output-file
                  default-color color
                  preset-gradient parallel
-                 help]} :options} (cli/parse-opts args cli-options)]
+                 help image-type]} :options} (cli/parse-opts args cli-options)]
     (cond
       (some? help) {:exit-code 0 :exit-text (usage summary)}
       (and (empty? color)
            (nil? preset-gradient)) {:exit-code -1 :exit-text no-color-or-preset}
-      :else {:option    (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
-             :grad      (if (some? preset-gradient)
-                          @preset-gradient
-                          (gradient/vec->Gradient color limit default-color))
-             :file-name output-file
-             :parallel? parallel})))
+      (nil? image-type) {:exit-code -1 :exit-text (str "Unknown or unsupported image extension for " output-file)}
+      :else {:option     (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
+             :grad       (if (some? preset-gradient)
+                           @preset-gradient
+                           (gradient/vec->Gradient color limit default-color))
+             :file-name  output-file
+             :image-type image-type
+             :parallel?  parallel})))
 
 (defn -main [& args]
-  (let [{:keys [option grad file-name parallel? exit-code exit-text]} (validate-opts args)]
+  (let [{:keys [option grad file-name image-type parallel? exit-code exit-text]} (validate-opts args)]
     (when (and exit-code exit-text)
       (println exit-text)
       (System/exit exit-code))
     (time
-      (image/create-mandelbrot-png file-name option grad parallel?))
+      (image/create-mandelbrot-image image-type file-name option grad parallel?))
     (shutdown-agents)))
