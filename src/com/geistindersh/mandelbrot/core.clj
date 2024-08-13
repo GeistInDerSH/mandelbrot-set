@@ -53,9 +53,11 @@
    ["-t" "--image-type IMAGE_TYPE"
     :desc (str "The type of image to generate. Options: "
                (str/join ", " (map name image/valid-encoders)))
-    :default :png
-    :parse-fn #(image/str->image-encoder %)
-    :validate [#(some? %) "The image type must be a supported image type"]]
+    :default-fn (fn [obj]
+                  (let [file-name (get obj :output-file)
+                        ext       (peek (str/split file-name #"\."))]
+                    (image/str->image-encoder ext)))
+    :parse-fn #(image/str->image-encoder %)]
    [nil "--[no-]parallel" "Run the image generation in parallel"
     :default true]
    ["-h" "--help"]])
@@ -86,6 +88,7 @@
       (some? help) {:exit-code 0 :exit-text (usage summary)}
       (and (empty? color)
            (nil? preset-gradient)) {:exit-code -1 :exit-text no-color-or-preset}
+      (nil? image-type) {:exit-code -1 :exit-text (str "Unknown or unsupported image extension for " output-file)}
       :else {:option     (opt/make-options width-view-min width-view-max width height-view-min height-view-max height limit)
              :grad       (if (some? preset-gradient)
                            @preset-gradient
