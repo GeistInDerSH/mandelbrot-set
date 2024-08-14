@@ -4,6 +4,7 @@
     [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.options :as opt])
   (:import
+    (clojure.lang IPersistentVector)
     (java.awt Color)
     (java.util ArrayList)))
 
@@ -60,43 +61,35 @@
       (.add arr -1))
     (bytes (byte-array (.toArray arr)))))
 
-(defn- create-mandelbrot-vals-parallel
-  "Generate the initial mandelbrot values in a double-array.
-   This is done in parallel using futures that are awaited before returning."
-  [options]
-  (let [{:keys [width height limit]} options
-        row-vals (opt/row-constants options)
-        col-vals (opt/column-constants options)
-        buff     (double-array (* width height))
-        tasks    (into []
-                       (map (fn [i]
-                              (let [y    (nth col-vals i)
-                                    base (* i width)]
-                                (future
-                                  (doseq [j (range width)
-                                          :let [x (nth row-vals j)]]
-                                    (aset-double buff (+ base j) (mandelbrot-periodicity-checking x y limit)))))))
-                       (range height))]
-    (doseq [task tasks] @task)
-    buff))
-
 (defn- create-byte-buffer-parallel
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
   [options gradient]
-  (let [{:keys [colors default-color]} gradient
-        vals (create-mandelbrot-vals-parallel options)
-        arr  (ArrayList. (int (opt/image-buffer-size options)))]
-    (doseq [val vals
-            :let [alpha     (double (mod val 1))
-                  index     (int (math/floor val))
-                  ^Color c0 (nth colors index default-color)
-                  ^Color c1 (nth colors (inc index) default-color)]]
-      (.add arr (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
-      (.add arr (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
-      (.add arr (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
-      (.add arr -1))
-    (bytes (byte-array (.toArray arr)))))
+  (let [{:keys [^IPersistentVector colors ^Color default-color]} gradient
+        {:keys [height width limit]} options
+        row-vals (opt/row-constants options)
+        col-vals (opt/column-constants options)
+        buff     (bytes (byte-array (opt/image-buffer-size options)))
+        tasks    (into []
+                       (map (fn [idy]
+                              (future
+                                (let [y    (.nth col-vals idy)
+                                      base (* idy height 4)]
+                                  (dotimes [idx width]
+                                    (let [offset    (+ base (* 4 idx))
+                                          x         (.nth row-vals idx)
+                                          val       (mandelbrot-periodicity-checking x y limit)
+                                          alpha     (double (mod val 1))
+                                          index     (int (math/floor val))
+                                          ^Color c0 (.nth colors index default-color)
+                                          ^Color c1 (.nth colors (inc index) default-color)]
+                                      (aset-byte buff offset (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
+                                      (aset-byte buff (+ offset 1) (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
+                                      (aset-byte buff (+ offset 2) (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
+                                      (aset-byte buff (+ offset 3) -1)))))))
+                       (range width))]
+    (doseq [task tasks] @task)                              ;; Await all tasks to ensure the buffer is filled out
+    buff))
 
 (defn create-byte-buffer
   "Generate an image byte buffer of 8-bit RGB values.

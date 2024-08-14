@@ -1,4 +1,5 @@
-(ns com.geistindersh.mandelbrot.options)
+(ns com.geistindersh.mandelbrot.options
+  (:import (clojure.lang IPersistentVector)))
 
 (defrecord
   ^{:added "0.1.1"}
@@ -25,7 +26,7 @@
 
 (defn row-constants
   "Eagerly generate all values for the rows of the image"
-  [options]
+  ^IPersistentVector [options]
   (let [{:keys [width-delta width-view-min width]} options]
     (into []
           (comp
@@ -35,7 +36,7 @@
 
 (defn column-constants
   "Eagerly generate all values for the columns of the image"
-  [options]
+  ^IPersistentVector [options]
   (let [{:keys [height-delta height-view-min height]} options]
     (into []
           (comp
