@@ -48,7 +48,7 @@
         {:keys [limit width height]} options
         row-vals (opt/row-constants options)
         col-vals (opt/column-constants options)
-        buff     (byte-array (opt/image-buffer-size options))]
+        buff     (bytes (byte-array (opt/image-buffer-size options)))]
     (dotimes [idy height]
       (let [y    (.nth col-vals idy)
             base (* idy width 4)]
