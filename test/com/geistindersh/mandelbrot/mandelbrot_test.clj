@@ -25,8 +25,8 @@
                (mandelbrot-periodicity-checking 0.26726726726726735 0.18918918918918926 128) 128.0)))
 
 (deftest mandelbrot-create-byte-buffer-test
-  (let [square-parallel-buff     (create-byte-buffer testing-options-square testing-gradient true)
-        non-square-parallel-buff (create-byte-buffer testing-options-480p testing-gradient true)
+  (let [square-parallel-buff     (create-byte-buffer testing-options-square testing-gradient)
+        non-square-parallel-buff (create-byte-buffer testing-options-480p testing-gradient)
         square-serial-buff       (create-byte-buffer testing-options-square testing-gradient false)
         non-square-serial-buff   (create-byte-buffer testing-options-480p testing-gradient false)]
     (testing "Bytes count matches expected"
