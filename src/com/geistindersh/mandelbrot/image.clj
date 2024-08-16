@@ -10,28 +10,26 @@
 (defn- create-mandelbrot-image-int
   "Internal function for generating the mandelbrot image.
    encoder-fn is a function that takes in an Image, and returns a java.nio.ByteBuffer. See 'encoders' for functions"
-  ([encoder-fn file-name option colors]
-   (create-mandelbrot-image-int encoder-fn file-name option colors true))
-  ([encoder-fn file-name option colors parallel?]
-   (let [{:keys [width height]} option
-         color-info   (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
-         image-info   (ImageInfo. color-info width height)
-         buffer       (mandelbrot/create-byte-buffer option colors parallel?)
-         byte-buffer  (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
-                           (encoder-fn))
-         path         (.toPath (io/file file-name))
-         file-options (into-array OpenOption [StandardOpenOption/CREATE
-                                              StandardOpenOption/TRUNCATE_EXISTING
-                                              StandardOpenOption/WRITE])
-         file         (Files/newByteChannel path file-options)]
-     (try
-       (.write file byte-buffer)
-       true
-       (catch Exception e
-         (println e)
-         false)
-       (finally
-         (.close file))))))
+  [encoder-fn file-name option colors parallel?]
+  (let [{:keys [width height]} option
+        color-info   (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
+        image-info   (ImageInfo. color-info width height)
+        buffer       (mandelbrot/create-byte-buffer option colors parallel?)
+        byte-buffer  (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
+                          (encoder-fn))
+        path         (.toPath (io/file file-name))
+        file-options (into-array OpenOption [StandardOpenOption/CREATE
+                                             StandardOpenOption/TRUNCATE_EXISTING
+                                             StandardOpenOption/WRITE])
+        file         (Files/newByteChannel path file-options)]
+    (try
+      (.write file byte-buffer)
+      true
+      (catch Exception e
+        (println e)
+        false)
+      (finally
+        (.close file)))))
 
 (def ^:private encoders {:png  (fn [^Image img] (.toByteBuffer (EncoderPNG/encode img)))
                          :jpeg (fn [^Image img] (.toByteBuffer (EncoderJPEG/encode img)))
