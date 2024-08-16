@@ -1,6 +1,6 @@
 (ns com.geistindersh.mandelbrot.mandelbrot-test
   (:require
-    [clojure.test :refer [are deftest is testing]]
+    [clojure.test :refer [are deftest testing]]
     [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.mandelbrot :refer [create-byte-buffer mandelbrot-periodicity-checking]]
     [com.geistindersh.mandelbrot.options :as opt])
@@ -25,23 +25,18 @@
                (mandelbrot-periodicity-checking 0.26726726726726735 0.18918918918918926 128) 128.0)))
 
 (deftest mandelbrot-create-byte-buffer-test
-  (testing "Bytes count matches expected"
-    (is (= (count (create-byte-buffer testing-options-square testing-gradient))
-           (opt/image-buffer-size testing-options-square)))
-    (is (= (count (create-byte-buffer testing-options-480p testing-gradient))
-           (opt/image-buffer-size testing-options-480p))))
-  (testing "Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient true)
-                       ^bytes (create-byte-buffer testing-options-square testing-gradient true)))
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient true)
-                       ^bytes (create-byte-buffer testing-options-480p testing-gradient true))))
-  (testing "Serial buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options-square testing-gradient false)))
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options-480p testing-gradient false))))
-  (testing "Serial and Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options-square testing-gradient true)))
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options-480p testing-gradient true)))))
+  (let [square-parallel-buff     (create-byte-buffer testing-options-square testing-gradient true)
+        non-square-parallel-buff (create-byte-buffer testing-options-480p testing-gradient true)
+        square-serial-buff       (create-byte-buffer testing-options-square testing-gradient false)
+        non-square-serial-buff   (create-byte-buffer testing-options-480p testing-gradient false)]
+    (testing "Bytes count matches expected"
+      (are [a b] (= (count a)
+                    (opt/image-buffer-size b))
+                 square-parallel-buff testing-options-square
+                 square-serial-buff testing-options-square
+                 non-square-parallel-buff testing-options-480p
+                 non-square-serial-buff testing-options-480p))
+    (testing "Serial and Parallel buffers are the same"
+      (are [a b] (Arrays/equals ^bytes a ^bytes b)
+                 square-parallel-buff square-serial-buff
+                 non-square-parallel-buff non-square-serial-buff))))
