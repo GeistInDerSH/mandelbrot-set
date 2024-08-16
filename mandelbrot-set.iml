@@ -49,7 +49,6 @@
     <orderEntry type="library" name="Deps: org.apache.maven.resolver/maven-resolver-transport-file:1.8.2" level="project" />
     <orderEntry type="library" name="Deps: org.eclipse.sisu/org.eclipse.sisu.plexus:0.3.5" level="project" />
     <orderEntry type="library" name="Deps: slingshot:0.12.2" level="project" />
-    <orderEntry type="library" name="Deps: com.clojure-goes-fast/clj-async-profiler:1.2.2" level="project" />
     <orderEntry type="library" name="Deps: org.apache.maven/maven-settings-builder:3.8.8" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/tools.namespace:1.5.0" level="project" />
     <orderEntry type="library" name="Deps: fipp:0.6.26" level="project" />

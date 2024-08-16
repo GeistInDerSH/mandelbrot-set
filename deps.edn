@@ -1,6 +1,5 @@
 {:paths   ["src" "resources"]
- :deps    {com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.2.2"}
-           io.github.humbleui/skija-linux-x64       {:mvn/version "0.116.2"}
+ :deps    {io.github.humbleui/skija-linux-x64       {:mvn/version "0.116.2"}
            io.github.humbleui/skija-macos-x64       {:mvn/version "0.116.2"}
            io.github.humbleui/skija-shared          {:mvn/version "0.116.2"}
            io.github.humbleui/skija-windows-x64     {:mvn/version "0.116.2"}
