@@ -74,7 +74,7 @@
                        (map (fn [idy]
                               (future
                                 (let [y    (.nth col-vals idy)
-                                      base (* idy height 4)]
+                                      base (* idy width 4)]
                                   (dotimes [idx width]
                                     (let [offset    (+ base (* 4 idx))
                                           x         (.nth row-vals idx)
@@ -87,7 +87,7 @@
                                       (aset-byte buff (+ offset 1) (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
                                       (aset-byte buff (+ offset 2) (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
                                       (aset-byte buff (+ offset 3) -1)))))))
-                       (range width))]
+                       (range height))]
     (doseq [task tasks] @task)                              ;; Await all tasks to ensure the buffer is filled out
     buff))
 

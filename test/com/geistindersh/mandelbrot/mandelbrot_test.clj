@@ -8,7 +8,8 @@
     (java.awt Color)
     (java.util Arrays)))
 
-(def ^:private testing-options (opt/make-options -1.0 1.0 500 -1.0 1.0 500))
+(def ^:private testing-options-square (opt/make-options -1.0 1.0 500 -1.0 1.0 500))
+(def ^:private testing-options-480p (opt/make-options -1.0 1.0 640 -1.0 1.0 480))
 (def ^:private testing-gradient (gradient/vec->Gradient [Color/RED Color/BLUE]))
 
 (deftest mandelbrot-test
@@ -25,14 +26,22 @@
 
 (deftest mandelbrot-create-byte-buffer-test
   (testing "Bytes count matches expected"
-    (is (= (count (create-byte-buffer testing-options testing-gradient))
-           (opt/image-buffer-size testing-options))))
+    (is (= (count (create-byte-buffer testing-options-square testing-gradient))
+           (opt/image-buffer-size testing-options-square)))
+    (is (= (count (create-byte-buffer testing-options-480p testing-gradient))
+           (opt/image-buffer-size testing-options-480p))))
   (testing "Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient true)
-                       ^bytes (create-byte-buffer testing-options testing-gradient true))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient true)
+                       ^bytes (create-byte-buffer testing-options-square testing-gradient true)))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient true)
+                       ^bytes (create-byte-buffer testing-options-480p testing-gradient true))))
   (testing "Serial buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options testing-gradient false))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options-square testing-gradient false)))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options-480p testing-gradient false))))
   (testing "Serial and Parallel buffers are the same"
-    (is (Arrays/equals ^bytes (create-byte-buffer testing-options testing-gradient false)
-                       ^bytes (create-byte-buffer testing-options testing-gradient true)))))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-square testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options-square testing-gradient true)))
+    (is (Arrays/equals ^bytes (create-byte-buffer testing-options-480p testing-gradient false)
+                       ^bytes (create-byte-buffer testing-options-480p testing-gradient true)))))
