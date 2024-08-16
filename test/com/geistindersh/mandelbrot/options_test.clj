@@ -12,11 +12,11 @@
                   (opt/make-options -1.0 1.0 1000 -1.0 1.0 1000)
                   (opt/make-options -1.0 1.0 1000 -1.0 1.0 1000 128))))
 
-(deftest range-tests
-  (testing "x-range"
+(deftest row-col-constants-test
+  (testing "Row Constants"
     (is (= (count (opt/row-constants testing-options))
            1000)))
-  (testing "x-range"
+  (testing "Column Constants"
     (is (= (count (opt/column-constants testing-options))
            1000))))
 
