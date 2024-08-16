@@ -37,6 +37,6 @@
                  non-square-parallel-buff testing-options-480p
                  non-square-serial-buff testing-options-480p))
     (testing "Serial and Parallel buffers are the same"
-      (are [a b] (Arrays/equals ^bytes a ^bytes b)
+      (are [a b] (Arrays/equals (bytes a) (bytes b))
                  square-parallel-buff square-serial-buff
                  non-square-parallel-buff non-square-serial-buff))))
