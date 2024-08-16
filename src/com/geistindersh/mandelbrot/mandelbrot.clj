@@ -5,8 +5,7 @@
     [com.geistindersh.mandelbrot.options :as opt])
   (:import
     (clojure.lang IPersistentVector)
-    (java.awt Color)
-    (java.util ArrayList)))
+    (java.awt Color)))
 
 (def ^:private log-2 (math/log 2))
 (def ^:private xyn2-limit (double (bit-shift-left 1 16)))
@@ -45,21 +44,27 @@
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
    The pixels in the buffer is allocated for RGBA 8888 images."
   [options gradient]
-  (let [{:keys [colors default-color]} gradient
-        {:keys [limit]} options
-        arr (ArrayList. (int (opt/image-buffer-size options)))]
-    (doseq [y (opt/column-constants options)
-            x (opt/row-constants options)
-            :let [val       (double (mandelbrot-periodicity-checking x y limit))
-                  alpha     (double (mod val 1))
-                  index     (int (math/floor val))
-                  ^Color c0 (nth colors index default-color)
-                  ^Color c1 (nth colors (inc index) default-color)]]
-      (.add arr (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
-      (.add arr (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
-      (.add arr (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
-      (.add arr -1))
-    (bytes (byte-array (.toArray arr)))))
+  (let [{:keys [^IPersistentVector colors ^Color default-color]} gradient
+        {:keys [limit width height]} options
+        row-vals (opt/row-constants options)
+        col-vals (opt/column-constants options)
+        buff     (byte-array (opt/image-buffer-size options))]
+    (dotimes [idy height]
+      (let [y    (.nth col-vals idy)
+            base (* idy width 4)]
+        (dotimes [idx width]
+          (let [offset    (+ base (* 4 idx))
+                x         (.nth row-vals idx)
+                val       (mandelbrot-periodicity-checking x y limit)
+                alpha     (double (mod val 1))
+                index     (int (math/floor val))
+                ^Color c0 (.nth colors index default-color)
+                ^Color c1 (.nth colors (inc index) default-color)]
+            (aset-byte buff offset (gradient/linear-interpolation (.getRed c0) (.getRed c1) alpha))
+            (aset-byte buff (+ offset 1) (gradient/linear-interpolation (.getGreen c0) (.getGreen c1) alpha))
+            (aset-byte buff (+ offset 2) (gradient/linear-interpolation (.getBlue c0) (.getBlue c1) alpha))
+            (aset-byte buff (+ offset 3) -1)))))
+    buff))
 
 (defn- create-byte-buffer-parallel
   "Create a byte-array mapping to the pixel color values for the mandelbrot image.
