@@ -60,8 +60,10 @@
                "green" Color/GREEN
                "grey" Color/GRAY
                "magenta" Color/MAGENTA
+               "orange" Color/ORANGE
                "pink" Color/PINK
                "red" Color/RED
+               "white" Color/WHITE
                "yellow" Color/YELLOW
                "fef65b" (Color. 254 246 91)
                "0x4974a5" (Color. 73 116 165)

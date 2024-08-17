@@ -75,8 +75,10 @@
       "green" Color/GREEN
       "grey" Color/GRAY
       "magenta" Color/MAGENTA
+      "orange" Color/ORANGE
       "pink" Color/PINK
       "red" Color/RED
+      "white" Color/WHITE
       "yellow" Color/YELLOW
       (Color. (Integer/parseInt (str/replace s #"^0x" "")
                                 16)))))
