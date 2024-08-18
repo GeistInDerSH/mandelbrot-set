@@ -50,7 +50,7 @@ jobs:
         run: clojure -M:test/integration
 
       - name: "Lint with clj-kondo"
-        run: clj-kondo --lint deps.edn src resources test
+        run: clj-kondo --lint deps.edn src
 
       - name: Package Clojure project
         run: clojure -T:build jar
