@@ -18,6 +18,10 @@
     <option name="dirTypeMappings">
       <set>
         <FolderState>
+          <option name="dirUrl" value="file://$PROJECT_DIR$/src/test/clojure" />
+          <option name="type" value="TEST_SOURCE" />
+        </FolderState>
+        <FolderState>
           <option name="dirUrl" value="file://$PROJECT_DIR$/test" />
           <option name="type" value="TEST_SOURCE" />
         </FolderState>

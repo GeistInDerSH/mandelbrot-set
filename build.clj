@@ -24,7 +24,7 @@
 (defn uber [{:keys [env]
              :or   {env :debug}}]
   (clean nil)
-  (build/copy-dir {:src-dirs   ["resources"]
+  (build/copy-dir {:src-dirs   ["src/main/resources"]
                    :target-dir class-dir})
   (build/compile-clj {:basis        @basis
                       :bindings     {#'*warn-on-reflection* true}

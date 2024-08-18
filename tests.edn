@@ -1,15 +1,17 @@
 #kaocha/v1
 #merge
 [{:tests [{:id :unit
+           :test-paths ["src/test/clojure" "src/main/clojure"]
            :skip-meta [:integration]}
-          {:id :integration
+          {:id         :integration
+           :test-paths ["src/test/clojure" "src/main/clojure"]
            :focus-meta [:integration]}]
   :watch? false
   :reporter kaocha.report/documentation}
-#profile {:ci {:color? false
-               :reporter kaocha.report.progress/report
-               :fail-fast? false}
-          :benchmark {:kaocha/plugins [:kaocha.plugin/profiling]
+ #profile {:ci        {:color?     false
+                       :reporter   kaocha.report.progress/report
+                       :fail-fast? false}
+           :benchmark {:kaocha/plugins [:kaocha.plugin/profiling]
                       :kaocha.plugin.profiling/profiling? true
                       :fail-fast? true}
           :coverage {:kaocha/plugins [:kaocha.plugin/cloverage]}
