@@ -4,7 +4,7 @@
     [clojure.string :as str]
     [com.geistindersh.mandelbrot.mandelbrot :as mandelbrot])
   (:import
-    (io.github.humbleui.skija ColorAlphaType ColorInfo ColorSpace ColorType EncoderJPEG EncoderPNG EncoderWEBP Image ImageInfo)
+    (io.github.humbleui.skija ColorAlphaType ColorInfo ColorSpace ColorType Data EncoderJPEG EncoderPNG EncoderWEBP Image ImageInfo)
     (java.nio.file Files OpenOption StandardOpenOption)))
 
 (defn- create-mandelbrot-image-int
@@ -15,7 +15,7 @@
         color-info   (ColorInfo. ColorType/RGBA_8888 ColorAlphaType/UNPREMUL (ColorSpace/getSRGB))
         image-info   (ImageInfo. color-info width height)
         buffer       (mandelbrot/create-byte-buffer option colors parallel?)
-        byte-buffer  (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
+        ^Data data   (->> (Image/makeRasterFromBytes image-info buffer (.getMinRowBytes image-info))
                           (encoder-fn))
         path         (.toPath (io/file file-name))
         file-options (into-array OpenOption [StandardOpenOption/CREATE
@@ -23,7 +23,9 @@
                                              StandardOpenOption/WRITE])
         file         (Files/newByteChannel path file-options)]
     (try
-      (.write file byte-buffer)
+      (->> data
+           .toByteBuffer
+           (.write file))
       true
       (catch Exception e
         (println e)
@@ -31,9 +33,9 @@
       (finally
         (.close file)))))
 
-(def ^:private encoders {:png  (fn [^Image img] (.toByteBuffer (EncoderPNG/encode img)))
-                         :jpeg (fn [^Image img] (.toByteBuffer (EncoderJPEG/encode img)))
-                         :webp (fn [^Image img] (.toByteBuffer (EncoderWEBP/encode img)))})
+(def ^:private encoders {:png  ^[Image] EncoderPNG/encode
+                         :jpeg ^[Image] EncoderJPEG/encode
+                         :webp ^[Image] EncoderWEBP/encode})
 (def valid-encoders (keys encoders))
 
 (defn create-mandelbrot-image
