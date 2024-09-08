@@ -2,6 +2,7 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as str]
+    [clojure.tools.logging :as log]
     [com.geistindersh.mandelbrot.mandelbrot :as mandelbrot])
   (:import
     (io.github.humbleui.skija ColorAlphaType ColorInfo ColorSpace ColorType Data EncoderJPEG EncoderPNG EncoderWEBP Image ImageInfo)
@@ -28,7 +29,7 @@
            (.write file))
       true
       (catch Exception e
-        (println e)
+        (log/error e)
         false)
       (finally
         (.close file)))))

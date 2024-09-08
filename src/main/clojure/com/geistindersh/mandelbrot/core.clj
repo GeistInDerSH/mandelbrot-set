@@ -3,6 +3,7 @@
   (:require
     [clojure.string :as str]
     [clojure.tools.cli :as cli]
+    [clojure.tools.logging :as log]
     [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.image :as image]
     [com.geistindersh.mandelbrot.options :as opt])
@@ -100,7 +101,7 @@
 (defn -main [& args]
   (let [{:keys [option grad file-name image-type parallel? exit-code exit-text]} (validate-opts args)]
     (when (and exit-code exit-text)
-      (println exit-text)
+      (log/info exit-text)
       (System/exit exit-code))
     (time
       (image/create-mandelbrot-image image-type file-name option grad parallel?))

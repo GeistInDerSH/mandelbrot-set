@@ -2,6 +2,7 @@
   (:require
     [clojure.java.io :as io]
     [clojure.test :refer [are deftest is testing]]
+    [clojure.tools.logging :as log]
     [com.geistindersh.mandelbrot.gradient :as gradient]
     [com.geistindersh.mandelbrot.image :refer [create-mandelbrot-image str->image-encoder]]
     [com.geistindersh.mandelbrot.options :as opt])
@@ -30,7 +31,7 @@
       (try
         (is (create-mandelbrot-image :png file-name testing-options testing-gradient))
         (catch Exception e
-          (println e))
+          (log/error e))
         (finally
           (.delete (io/file file-name))))))
   (testing "JPEG"
@@ -38,7 +39,7 @@
       (try
         (is (create-mandelbrot-image :jpeg file-name testing-options testing-gradient))
         (catch Exception e
-          (println e))
+          (log/error e))
         (finally
           (.delete (io/file file-name))))))
   (testing "WEBP"
@@ -46,7 +47,7 @@
       (try
         (is (create-mandelbrot-image :webp file-name testing-options testing-gradient))
         (catch Exception e
-          (println e))
+          (log/error e))
         (finally
           (.delete (io/file file-name))))))
   (testing "Unsupported Image Type"

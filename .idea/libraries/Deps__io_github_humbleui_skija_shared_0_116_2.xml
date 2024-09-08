@@ -4,6 +4,8 @@
       <root url="jar://$MAVEN_REPOSITORY$/io/github/humbleui/skija-shared/0.116.2/skija-shared-0.116.2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/skija-shared-0.116.2-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
