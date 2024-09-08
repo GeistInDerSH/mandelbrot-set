@@ -13,6 +13,7 @@ pom.xml.asc
 .nrepl-port
 .cpcache/
 .clj-kondo/
+/logs/
 *.png
 *.jpeg
 *.jpg
