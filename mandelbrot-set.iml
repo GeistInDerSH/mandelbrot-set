@@ -50,7 +50,7 @@
     <orderEntry type="library" name="Deps: org.eclipse.sisu/org.eclipse.sisu.plexus:0.3.5" level="project" />
     <orderEntry type="library" name="Deps: slingshot:0.12.2" level="project" />
     <orderEntry type="library" name="Deps: org.apache.maven/maven-settings-builder:3.8.8" level="project" />
-    <orderEntry type="library" name="Deps: org.clojure/tols.namespace:1.5.0" level="project" />
+    <orderEntry type="library" name="Deps: org.clojure/tools.namespace:1.5.0" level="project" />
     <orderEntry type="library" name="Deps: fipp:0.6.26" level="project" />
     <orderEntry type="library" name="Deps: com.nextjournal/beholder:1.0.2" level="project" />
     <orderEntry type="library" name="Deps: aero:1.1.6" level="project" />
@@ -85,6 +85,7 @@
     <orderEntry type="library" name="Deps: org.eclipse.jetty/jetty-io:9.4.53.v20231009" level="project" />
     <orderEntry type="library" name="Deps: io.github.humbleui/types:0.1.1" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/tools.reader:1.4.0" level="project" />
+    <orderEntry type="library" name="Deps: io.github.humbleui/skija-macos-arm64:0.116.2" level="project" />
     <orderEntry type="library" name="Deps: org.tcrawley/dynapath:1.1.0" level="project" />
     <orderEntry type="library" name="Deps: org.clojure/tools.gitlibs:2.5.197" level="project" />
     <orderEntry type="library" name="Deps: org.apache.maven.resolver/maven-resolver-connector-basic:1.8.2" level="project" />

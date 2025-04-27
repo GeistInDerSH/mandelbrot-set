@@ -1,6 +1,7 @@
 {:paths   ["src/main/clojure" "src/main/resources"]
  :deps    {io.github.humbleui/skija-linux-x64       {:mvn/version "0.116.2"}
            io.github.humbleui/skija-macos-x64       {:mvn/version "0.116.2"}
+           io.github.humbleui/skija-macos-arm64     {:mvn/version "0.116.2"}
            io.github.humbleui/skija-shared          {:mvn/version "0.116.2"}
            io.github.humbleui/skija-windows-x64     {:mvn/version "0.116.2"}
            org.clojure/clojure                      {:mvn/version "1.12.0"}
